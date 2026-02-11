@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthType, normalizePhone } from "@/lib/auth";
-import { getStoredCode, deleteStoredCode } from "../send-code/route";
+import { getStoredCode, deleteStoredCode } from "@/lib/codes";
 import { SignJWT } from "jose";
 
 const JWT_SECRET = new TextEncoder().encode(

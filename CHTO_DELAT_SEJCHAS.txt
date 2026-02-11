@@ -1,0 +1,64 @@
+ЧТО ДЕЛАТЬ СЕЙЧАС
+==================
+
+ПРОБЛЕМА:
+Команда "apt" не работает - значит на сервере не Ubuntu.
+
+РЕШЕНИЕ:
+Нужно использовать другие команды.
+
+==================
+ШАГ 1: ПРОВЕРИТЬ СИСТЕМУ
+==================
+
+В Shell-клиенте выполните:
+
+cat /etc/os-release
+
+Это покажет какая система установлена.
+
+==================
+ШАГ 2: ИСПОЛЬЗОВАТЬ ПРАВИЛЬНЫЕ КОМАНДЫ
+==================
+
+ЕСЛИ CentOS/RHEL (скорее всего):
+
+sudo yum update -y
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+sudo yum install -y nodejs
+sudo npm install -g pm2
+sudo yum install -y nginx git
+
+ЕСЛИ Ubuntu/Debian:
+
+sudo apt update && sudo apt upgrade -y
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt install -y nodejs
+sudo npm install -g pm2
+sudo apt install -y nginx git
+
+==================
+ШАГ 3: ЕСЛИ SUDO НЕ РАБОТАЕТ
+==================
+
+Переключитесь на root:
+
+su -
+
+Введите пароль root.
+
+Теперь выполняйте команды БЕЗ sudo.
+
+==================
+ЧТО ДЕЛАТЬ ПРЯМО СЕЙЧАС:
+==================
+
+1. Выполните: cat /etc/os-release
+2. Пришлите результат
+3. Я скажу точные команды для вашей системы
+
+ИЛИ попробуйте:
+
+sudo yum update -y
+
+Если работает - используйте команды с "yum" и "sudo".

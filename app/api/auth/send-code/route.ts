@@ -1,18 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateCode, getAuthType, isValidEmail, isValidPhone, normalizePhone } from "@/lib/auth";
-
-// Временное хранилище кодов (в продакшене использовать Redis или БД)
-const codes = new Map<string, { code: string; expiresAt: number; type: "phone" | "email" }>();
-
-// Очистка истекших кодов каждые 5 минут
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of codes.entries()) {
-    if (value.expiresAt < now) {
-      codes.delete(key);
-    }
-  }
-}, 5 * 60 * 1000);
+import { saveCode } from "@/lib/codes";
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,7 +35,7 @@ export async function POST(request: NextRequest) {
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 минут
 
     // Сохранение кода
-    codes.set(normalized, { code, expiresAt, type: authType });
+    saveCode(phoneOrEmail, authType, code, expiresAt);
 
     // Отправка кода
     if (authType === "email") {
@@ -160,19 +148,3 @@ async function sendSMSCode(phone: string, code: string) {
   }
 }
 
-// Экспорт для проверки кодов (используется в verify-code route)
-export function getStoredCode(phoneOrEmail: string, authType: "phone" | "email"): { code: string; expiresAt: number } | null {
-  const normalized = authType === "phone" ? normalizePhone(phoneOrEmail) : phoneOrEmail.toLowerCase();
-  const stored = codes.get(normalized);
-  
-  if (!stored || stored.expiresAt < Date.now()) {
-    return null;
-  }
-  
-  return { code: stored.code, expiresAt: stored.expiresAt };
-}
-
-export function deleteStoredCode(phoneOrEmail: string, authType: "phone" | "email") {
-  const normalized = authType === "phone" ? normalizePhone(phoneOrEmail) : phoneOrEmail.toLowerCase();
-  codes.delete(normalized);
-}

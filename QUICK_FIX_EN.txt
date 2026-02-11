@@ -1,0 +1,52 @@
+TERMINAL PASSWORD FIX - QUICK GUIDE
+====================================
+
+PROBLEM:
+Password doesn't seem to enter in terminal.
+
+SOLUTION:
+====================================
+IMPORTANT: Password IS entering, but it's HIDDEN!
+====================================
+
+In Linux terminals, passwords are NEVER shown:
+- No stars (*)
+- No dots (•)
+- Nothing visible
+
+THIS IS NORMAL! Just type and press Enter.
+
+====================================
+WHAT TO DO:
+====================================
+
+1. Turn OFF Caps Lock
+2. Type password (you won't see it - this is OK!)
+3. Press Enter
+
+If doesn't work:
+- Copy password from control panel
+- Right-click in terminal → Paste
+- Press Enter
+
+====================================
+IF STILL DOESN'T WORK:
+====================================
+
+1. Reset password in Beget control panel
+2. Set simple password (only letters/numbers)
+3. Try again
+
+OR:
+
+1. Try logging in as "root" instead
+2. Use SSH instead of VNC terminal
+
+====================================
+REMEMBER:
+====================================
+
+✅ Password is ALWAYS hidden - this is normal!
+✅ Type password even if invisible
+✅ Press Enter after typing
+✅ Caps Lock must be OFF
