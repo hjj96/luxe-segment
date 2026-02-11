@@ -136,8 +136,11 @@ export const MOCK_PRODUCTS: Product[] = [
 
 // Placeholder images (use real URLs or /public/img in production)
 export function getProductImageUrl(product: Product, index = 0): string {
+  if (product.images.length === 0) {
+    return `https://placehold.co/600x800/f5f5f7/86868b?text=${encodeURIComponent(product.name)}`;
+  }
   const img = product.images[index] || product.images[0];
-  if (img?.startsWith("http")) return img;
+  if (img && img.startsWith("http")) return img;
   // Placeholder for demo when no images in public
   return `https://placehold.co/600x800/f5f5f7/86868b?text=${encodeURIComponent(product.name)}`;
 }

@@ -10,8 +10,8 @@ import type { Product } from "@/lib/types";
 export function ProductClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, isFavorite } = useCartFavorites();
   const [currentImage, setCurrentImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState<string>(product.colors[0] ?? "");
-  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] ?? "");
+  const [selectedColor, setSelectedColor] = useState<string>(product.colors.length > 0 ? product.colors[0] : "");
+  const [selectedSize, setSelectedSize] = useState<string>(product.sizes.length > 0 ? product.sizes[0] : "");
   const fav = isFavorite(product.id);
 
   const imageUrl = getProductImageUrl(product, currentImage);
