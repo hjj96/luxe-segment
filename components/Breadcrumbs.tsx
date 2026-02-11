@@ -20,7 +20,12 @@ function getPathLabel(path: string): string {
   if (path.startsWith("/product/")) {
     return "Товар";
   }
-  return PATH_NAMES[path] || path.split("/").pop()?.charAt(0).toUpperCase() + path.split("/").pop()?.slice(1) || "";
+  if (PATH_NAMES[path]) {
+    return PATH_NAMES[path];
+  }
+  const lastSegment = path.split("/").pop();
+  if (!lastSegment) return "";
+  return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
 }
 
 export function Breadcrumbs() {
