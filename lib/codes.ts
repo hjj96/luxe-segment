@@ -8,7 +8,7 @@ const codes = new Map<string, { code: string; expiresAt: number; type: "phone" |
 // Очистка истекших кодов каждые 5 минут
 setInterval(() => {
   const now = Date.now();
-  for (const [key, value] of codes.entries()) {
+  for (const [key, value] of Array.from(codes.entries())) {
     if (value.expiresAt < now) {
       codes.delete(key);
     }
