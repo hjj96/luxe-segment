@@ -9,9 +9,8 @@ function optsKey(opts: { color?: string; size?: string }): string {
   return [opts.color ?? "", opts.size ?? ""].join("::");
 }
 
-function optionsLabel(opts: { color?: string; size?: string }): string {
-  const parts = [opts.color, opts.size].filter(Boolean);
-  return parts.length ? ` (${parts.join(", ")})` : "";
+function sizeLabel(opts: { color?: string; size?: string }): string {
+  return opts.size ? `Размер: ${opts.size}` : "";
 }
 
 export default function CartPage() {
@@ -52,29 +51,34 @@ export default function CartPage() {
           {cart.map((item) => {
             const key = item.productId + "::" + optsKey(item.options);
             return (
-              <div
-                key={key}
-                className="flex items-center gap-3 border-b border-luxe-border pb-8 sm:gap-6"
-              >
-                <div className="relative h-28 w-24 shrink-0 overflow-hidden bg-luxe-bg-alt">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                    unoptimized={item.image.startsWith("https://placehold")}
-                  />
+              <div key={key} className="border-b border-luxe-border pb-8">
+                <div className="flex gap-3 sm:gap-6">
+                  <div className="relative h-28 w-24 shrink-0 overflow-hidden bg-luxe-bg-alt">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                      unoptimized={item.image.startsWith("https://placehold")}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[11px] uppercase tracking-label text-luxe-mute">{item.brand}</p>
+                    <Link href={`/product/${item.productId}`} className="text-sm text-luxe-ink hover:underline">
+                      {item.name}
+                    </Link>
+                    {sizeLabel(item.options) && (
+                      <p className="mt-1 text-xs uppercase tracking-label text-luxe-mute">
+                        {sizeLabel(item.options)}
+                      </p>
+                    )}
+                    <p className="mt-1 text-sm text-luxe-mute">
+                      {item.price.toLocaleString("ru-RU")} ₽ × {item.quantity}
+                    </p>
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[11px] uppercase tracking-label text-luxe-mute">{item.brand}</p>
-                  <Link href={`/product/${item.productId}`} className="text-sm text-luxe-ink hover:underline">
-                    {item.name}{optionsLabel(item.options)}
-                  </Link>
-                  <p className="mt-1 text-sm text-luxe-mute">
-                    {item.price.toLocaleString("ru-RU")} ₽ × {item.quantity}
-                  </p>
-                </div>
-                <div className="ml-1 flex shrink-0 items-center gap-1.5">
+                <div className="mt-3 flex justify-end">
+                  <div className="ml-1 flex shrink-0 items-center gap-1.5">
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
@@ -100,6 +104,7 @@ export default function CartPage() {
                   >
                     <IconTrash size="sm" />
                   </button>
+                </div>
                 </div>
               </div>
             );

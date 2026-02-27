@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { IconFilter, IconX } from "./Icons";
+import { IconX } from "./Icons";
 
 export function FilterSheet({
   open,
@@ -30,10 +30,7 @@ export function FilterSheet({
       />
       <div className="bottom-sheet-panel" role="dialog" aria-modal="true">
         <div className="sticky top-0 flex items-center justify-between border-b border-luxe-border bg-white px-4 py-4 safe-area-padding">
-          <span className="flex items-center gap-2 text-xs uppercase tracking-label text-luxe-ink">
-            <IconFilter size="sm" />
-            Фильтры
-          </span>
+          <span className="text-xs uppercase tracking-label text-luxe-ink">Фильтры</span>
           <button
             type="button"
             onClick={onClose}
