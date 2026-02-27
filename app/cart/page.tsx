@@ -54,7 +54,7 @@ export default function CartPage() {
             return (
               <div
                 key={key}
-                className="flex gap-6 border-b border-luxe-border pb-8"
+                className="flex items-center gap-3 border-b border-luxe-border pb-8 sm:gap-6"
               >
                 <div className="relative h-28 w-24 shrink-0 overflow-hidden bg-luxe-bg-alt">
                   <Image
@@ -74,7 +74,7 @@ export default function CartPage() {
                     {item.price.toLocaleString("ru-RU")} ₽ × {item.quantity}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="ml-1 flex shrink-0 items-center gap-1.5">
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
@@ -83,7 +83,7 @@ export default function CartPage() {
                     >
                       −
                     </button>
-                    <span className="w-8 text-center text-sm">{item.quantity}</span>
+                    <span className="w-7 text-center text-sm tabular-nums">{item.quantity}</span>
                     <button
                       type="button"
                       onClick={() => updateCartQuantity(item.productId, item.quantity + 1, optsKey(item.options))}

@@ -80,3 +80,10 @@ select:focus-visible {
 .radio-minimal:checked {
   background: #0a0a0a;
 }
+
+.select-rect {
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none;
+}

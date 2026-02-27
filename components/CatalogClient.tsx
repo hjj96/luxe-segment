@@ -116,7 +116,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
           <select
             value={sort}
             onChange={(e) => applyParams({ sort: e.target.value })}
-            className="border border-luxe-border bg-white px-3 py-2 text-xs uppercase tracking-label text-luxe-ink"
+            className="select-rect border border-luxe-border bg-white px-3 py-2 text-xs uppercase tracking-label text-luxe-ink"
           >
             <option value="newest">По новизне</option>
             <option value="price_asc">Цена: по возрастанию</option>
@@ -244,7 +244,7 @@ function FilterForm({
         <select
           value={draftBrand}
           onChange={(e) => setDraftBrand(e.target.value)}
-          className="w-full border border-luxe-border bg-white px-3 py-2 text-sm text-luxe-ink"
+          className="select-rect w-full border border-luxe-border bg-white px-3 py-2 text-sm text-luxe-ink"
         >
           <option value="">Все</option>
           {BRANDS.map((b) => (
