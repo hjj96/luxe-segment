@@ -13,14 +13,15 @@ const config: Config = {
       },
       colors: {
         luxe: {
-          bg: "#ffffff",
-          "bg-alt": "#fafafa",
-          ink: "#000000",
+          bg: "#fdfdfc",
+          "bg-alt": "#f8f7f6",
+          ink: "#0a0a0a",
           "ink-soft": "#1a1a1a",
           mute: "#6b6b6b",
           "mute-strong": "#4a4a4a",
-          border: "#e5e5e5",
-          "border-strong": "#d4d4d4",
+          border: "#e8e6e4",
+          "border-strong": "#d6d4d2",
+          accent: "#c9a86c",
         },
       },
       letterSpacing: {

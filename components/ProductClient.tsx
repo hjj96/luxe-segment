@@ -30,8 +30,29 @@ export function ProductClient({ product }: { product: Product }) {
     });
   };
 
+  const actionButtons = (
+    <>
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        className="flex-1 min-w-0 bg-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-white"
+      >
+        В корзину
+      </button>
+      <a
+        href={TELEGRAM_CHAT}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex flex-1 min-w-0 items-center justify-center gap-2 border border-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-luxe-ink"
+      >
+        <IconTelegram size="sm" />
+        <span className="truncate">Telegram</span>
+      </a>
+    </>
+  );
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 pb-24 sm:pb-10">
       <div className="mb-10 flex items-center gap-4 sm:mb-14">
         <div className="h-px flex-1 bg-luxe-border" />
         <h1 className="section-title whitespace-nowrap text-2xl sm:text-3xl">
@@ -76,7 +97,7 @@ export function ProductClient({ product }: { product: Product }) {
             </div>
           )}
         </div>
-        <div>
+        <div className="md:sticky md:top-[4.5rem] md:self-start">
           <p className="text-[11px] uppercase tracking-label text-luxe-mute">{product.brand}</p>
           <p className="mt-6 text-lg text-luxe-ink">
             {product.price.toLocaleString("ru-RU")} {product.currency}
@@ -149,24 +170,32 @@ export function ProductClient({ product }: { product: Product }) {
               <IconHeart size="sm" filled={fav} className={fav ? "text-black" : ""} />
               {fav ? "В избранном" : "В избранное"}
             </button>
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white"
-            >
-              В корзину
-            </button>
-            <a
-              href={TELEGRAM_CHAT}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-3 text-xs text-luxe-mute hover:text-luxe-ink"
-            >
-              <IconTelegram size="sm" />
-              Консультация в Telegram
-            </a>
+            {/* Десктоп: блок в корзину + Telegram */}
+            <div className="hidden sm:flex sm:gap-3 sm:flex-col">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white"
+              >
+                В корзину
+              </button>
+              <a
+                href={TELEGRAM_CHAT}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink"
+              >
+                <IconTelegram size="sm" />
+                Консультация в Telegram
+              </a>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Мобильная фиксированная панель — всегда видна внизу экрана */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 border-t border-luxe-border bg-white p-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden">
+        {actionButtons}
       </div>
     </div>
   );

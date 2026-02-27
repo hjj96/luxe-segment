@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { TelegramBar } from "@/components/TelegramBar";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Footer } from "@/components/Footer";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CartFavoritesProvider } from "@/components/CartFavoritesProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 
@@ -28,8 +28,8 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col font-sans">
         <AuthProvider>
           <CartFavoritesProvider>
-            <TelegramBar />
             <Header />
+            <TelegramBar />
             <Breadcrumbs />
             <main className="flex-1 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))]">
               {children}

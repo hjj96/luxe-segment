@@ -43,7 +43,7 @@ export function FilterSheet({
             <IconX size="md" />
           </button>
         </div>
-        <div className="p-4">{children}</div>
+        <div className="p-4 pb-20">{children}</div>
       </div>
     </>
   );

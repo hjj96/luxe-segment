@@ -1,42 +1,31 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
-import { VideoRow } from "@/components/VideoRow";
-import { CategoryTiles } from "@/components/CategoryTiles";
-import { InfoCards } from "@/components/InfoCards";
-import {
-  CATEGORIES,
-  HOME_VIDEOS,
-  getProductsNewestFirst,
-} from "@/lib/data";
+import { getProductsNewestFirst } from "@/lib/data";
 
 export default function HomePage() {
   const newArrivals = getProductsNewestFirst().slice(0, 8);
 
   return (
-    <>
-      {/* Hero section with decorative line */}
-      <section className="border-t border-luxe-border bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="mb-10 flex items-center gap-4 sm:mb-14">
-            <div className="h-px flex-1 bg-luxe-border" />
-            <Link href="/catalog" className="section-title whitespace-nowrap hover:opacity-70 transition-opacity">
-              Новые поступления
-            </Link>
-            <div className="h-px flex-1 bg-luxe-border" />
-          </div>
-          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3 lg:grid-cols-4">
-            {newArrivals.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
+    <section className="min-h-[60vh]">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+        <header className="mb-10 sm:mb-14">
+          <h2 className="section-title whitespace-nowrap">Новинки</h2>
+        </header>
+
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-4">
+          {newArrivals.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
         </div>
-      </section>
-
-      <VideoRow videos={HOME_VIDEOS} />
-
-      <CategoryTiles categories={CATEGORIES} />
-
-      <InfoCards />
-    </>
+        <div className="mt-14 flex justify-center">
+          <Link
+            href="/catalog"
+            className="inline-block border border-luxe-ink px-5 py-3 text-xs uppercase tracking-[0.18em] text-luxe-ink transition hover:bg-luxe-ink hover:text-white"
+          >
+            Перейти каталог
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }

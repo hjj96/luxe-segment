@@ -15,7 +15,7 @@ export function TelegramBar() {
           className="flex items-center gap-2 text-white/90 transition hover:text-white"
         >
           <IconTelegram size="sm" className="shrink-0" />
-          <span>Консультация и заказ</span>
+          <span>Связаться с нами в Telegram</span>
         </Link>
         <Link
           href={TELEGRAM_CHANNEL}
@@ -24,7 +24,7 @@ export function TelegramBar() {
           className="flex items-center gap-2 text-white/90 transition hover:text-white"
         >
           <IconTelegram size="sm" className="shrink-0" />
-          <span>Канал Luxe Segment</span>
+          <span>Telegram Канал</span>
         </Link>
       </div>
     </div>

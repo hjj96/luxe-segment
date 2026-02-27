@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCartFavorites } from "@/components/CartFavoritesProvider";
 import { MOCK_PRODUCTS, getProductImageUrl } from "@/lib/data";
-import { IconHeart, IconCart } from "@/components/Icons";
+import { IconHeart } from "@/components/Icons";
 
 export default function FavoritesPage() {
   const { favorites, toggleFavorite, addToCart } = useCartFavorites();
@@ -77,7 +77,6 @@ export default function FavoritesPage() {
                 })}
                 className="flex flex-1 items-center justify-center border border-luxe-ink py-2.5 text-xs uppercase tracking-label text-luxe-ink"
               >
-                <IconCart size="sm" />
                 В корзину
               </button>
               <button

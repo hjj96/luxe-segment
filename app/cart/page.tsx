@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCartFavorites } from "@/components/CartFavoritesProvider";
-import { IconCart } from "@/components/Icons";
+import { IconTrash } from "@/components/Icons";
 
 function optsKey(opts: { color?: string; size?: string }): string {
   return [opts.color ?? "", opts.size ?? ""].join("::");
@@ -74,7 +74,7 @@ export default function CartPage() {
                     {item.price.toLocaleString("ru-RU")} ₽ × {item.quantity}
                   </p>
                 </div>
-                <div className="flex flex-col items-end gap-1">
+                <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
@@ -95,9 +95,10 @@ export default function CartPage() {
                   <button
                     type="button"
                     onClick={() => removeFromCart(item.productId, optsKey(item.options))}
-                    className="text-xs text-luxe-mute hover:text-luxe-ink"
+                    className="flex h-8 w-8 items-center justify-center border border-luxe-border text-luxe-mute transition-colors hover:text-luxe-ink"
+                    aria-label="Удалить из корзины"
                   >
-                    Удалить
+                    <IconTrash size="sm" />
                   </button>
                 </div>
               </div>

@@ -30,9 +30,10 @@ function getPathLabel(path: string): string {
 
 export function Breadcrumbs() {
   const pathname = usePathname();
-  
-  // Не показываем breadcrumbs на главной странице
-  if (pathname === "/") return null;
+
+  // Только на каталоге и странице товара
+  const show = pathname === "/catalog" || pathname.startsWith("/product/");
+  if (!show) return null;
 
   const pathSegments = pathname.split("/").filter(Boolean);
   const breadcrumbs = [

@@ -1,15 +1,14 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { FilterSheet } from "@/components/FilterSheet";
-import { IconFilter } from "@/components/Icons";
 import { CATEGORIES, BRANDS, COLORS } from "@/lib/data";
 import type { Product, Category } from "@/lib/types";
 
 const SIZES = ["S", "M", "L", "40", "41", "42", "43", "46", "48", "50", "52", "85", "90", "95", "100"];
+type SortValue = "newest" | "price_asc" | "price_desc";
 
 export function CatalogClient({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
@@ -24,6 +23,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
   const maxPrice = searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : null;
   const availability = searchParams.get("availability") || "";
   const search = searchParams.get("search") || "";
+  const sort = (searchParams.get("sort") as SortValue) || "newest";
 
   const setParams = useCallback(
     (updates: Record<string, string | null>) => {
@@ -32,24 +32,25 @@ export function CatalogClient({ products }: { products: Product[] }) {
         if (v == null || v === "") p.delete(k);
         else p.set(k, String(v));
       });
-      return `?${p.toString()}`;
+      const next = p.toString();
+      return next ? `?${next}` : "";
     },
     [searchParams]
   );
 
   const applyParams = useCallback(
-    (updates: Record<string, string | null>) => {
-      setFilterOpen(false);
+    (updates: Record<string, string | null>, closeSheet?: boolean) => {
+      if (closeSheet) setFilterOpen(false);
       router.push("/catalog" + setParams(updates));
     },
     [router, setParams]
   );
 
   const filtered = useMemo(() => {
-    return products.filter((p) => {
+    const base = products.filter((p) => {
       if (search) {
         const query = search.toLowerCase();
-        const matchesSearch = 
+        const matchesSearch =
           p.name.toLowerCase().includes(query) ||
           p.brand.toLowerCase().includes(query) ||
           p.description.toLowerCase().includes(query);
@@ -65,7 +66,13 @@ export function CatalogClient({ products }: { products: Product[] }) {
       if (availability === "made_to_order" && !p.madeToOrder) return false;
       return true;
     });
-  }, [products, search, category, brand, color, size, minPrice, maxPrice, availability]);
+
+    return base.sort((a, b) => {
+      if (sort === "price_asc") return a.price - b.price;
+      if (sort === "price_desc") return b.price - a.price;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [products, search, category, brand, color, size, minPrice, maxPrice, availability, sort]);
 
   const activeFiltersCount = [
     category,
@@ -77,27 +84,49 @@ export function CatalogClient({ products }: { products: Product[] }) {
     availability,
   ].filter(Boolean).length;
 
+  const resetAllFilters = () =>
+    applyParams({
+      category: null,
+      brand: null,
+      color: null,
+      size: null,
+      minPrice: null,
+      maxPrice: null,
+      availability: null,
+    });
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-      <div className="mb-10 flex items-center gap-4 sm:mb-14">
+      <div className="mb-8 flex items-center gap-4 sm:mb-10">
         <div className="h-px flex-1 bg-luxe-border" />
-        <h1 className="section-title whitespace-nowrap">
-          Каталог
-        </h1>
+        <h1 className="section-title whitespace-nowrap">Каталог</h1>
         <div className="h-px flex-1 bg-luxe-border" />
+      </div>
+
+      <div className="mb-6 flex items-center justify-end gap-2">
         <button
           type="button"
           onClick={() => setFilterOpen(true)}
-          className="flex items-center gap-2 border-b border-luxe-ink pb-1 text-xs uppercase tracking-label text-luxe-ink md:hidden ml-auto"
+          className="border border-luxe-border px-3 py-2 text-xs uppercase tracking-label text-luxe-ink md:hidden"
         >
-          <IconFilter size="sm" />
-          Фильтры
-          {activeFiltersCount > 0 && ` (${activeFiltersCount})`}
+          Фильтры{activeFiltersCount > 0 ? ` (${activeFiltersCount})` : ""}
         </button>
+        <label className="flex items-center gap-2 text-xs uppercase tracking-label text-luxe-mute">
+          <span className="hidden sm:inline">Сортировка</span>
+          <select
+            value={sort}
+            onChange={(e) => applyParams({ sort: e.target.value })}
+            className="border border-luxe-border bg-white px-3 py-2 text-xs uppercase tracking-label text-luxe-ink"
+          >
+            <option value="newest">По новизне</option>
+            <option value="price_asc">Цена: по возрастанию</option>
+            <option value="price_desc">Цена: по убыванию</option>
+          </select>
+        </label>
       </div>
 
       <div className="flex gap-8">
-        <aside className="hidden w-56 shrink-0 md:block">
+        <aside className="hidden w-64 shrink-0 md:block">
           <FilterForm
             category={category}
             brand={brand}
@@ -106,9 +135,8 @@ export function CatalogClient({ products }: { products: Product[] }) {
             minPrice={minPrice}
             maxPrice={maxPrice}
             availability={availability}
-            setParams={setParams}
-            applyParams={(u) => router.push("/catalog" + setParams(u))}
-            isSheet={false}
+            onApply={(u) => applyParams(u)}
+            onReset={resetAllFilters}
           />
         </aside>
         <div className="min-w-0 flex-1">
@@ -118,9 +146,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
             ))}
           </div>
           {filtered.length === 0 && (
-            <p className="py-12 text-center text-luxe-mute">
-              По выбранным фильтрам ничего не найдено.
-            </p>
+            <p className="py-12 text-center text-luxe-mute">По выбранным фильтрам ничего не найдено.</p>
           )}
         </div>
       </div>
@@ -134,9 +160,11 @@ export function CatalogClient({ products }: { products: Product[] }) {
           minPrice={minPrice}
           maxPrice={maxPrice}
           availability={availability}
-          setParams={setParams}
-          applyParams={applyParams}
-          isSheet
+          onApply={(u) => applyParams(u, true)}
+          onReset={() => {
+            resetAllFilters();
+            setFilterOpen(false);
+          }}
         />
       </FilterSheet>
     </div>
@@ -151,9 +179,8 @@ function FilterForm({
   minPrice,
   maxPrice,
   availability,
-  setParams,
-  applyParams,
-  isSheet,
+  onApply,
+  onReset,
 }: {
   category: string;
   brand: string;
@@ -162,89 +189,62 @@ function FilterForm({
   minPrice: number | null;
   maxPrice: number | null;
   availability: string;
-  setParams: (u: Record<string, string | null>) => string;
-  applyParams: (u: Record<string, string | null>) => void;
-  isSheet: boolean;
+  onApply: (updates: Record<string, string | null>) => void;
+  onReset: () => void;
 }) {
-  const base = "/catalog";
-  function getCurrent(overrides: Partial<Record<string, string | null>> = {}) {
-    return {
-      category: category || null,
-      brand: brand || null,
-      color: color || null,
-      size: size || null,
-      minPrice: minPrice != null ? String(minPrice) : null,
-      maxPrice: maxPrice != null ? String(maxPrice) : null,
-      availability: availability || null,
-      ...overrides,
-    };
-  }
-  const nav = (u: Record<string, string | null>) => {
-    if (isSheet) applyParams(u);
-    else window.location.href = base + setParams(u);
+  const [draftCategory, setDraftCategory] = useState(category);
+  const [draftBrand, setDraftBrand] = useState(brand);
+  const [draftColor, setDraftColor] = useState(color);
+  const [draftSize, setDraftSize] = useState(size);
+  const [draftMinPrice, setDraftMinPrice] = useState(minPrice != null ? String(minPrice) : "");
+  const [draftMaxPrice, setDraftMaxPrice] = useState(maxPrice != null ? String(maxPrice) : "");
+  const [draftAvailability, setDraftAvailability] = useState(availability);
+
+  useEffect(() => {
+    setDraftCategory(category);
+    setDraftBrand(brand);
+    setDraftColor(color);
+    setDraftSize(size);
+    setDraftMinPrice(minPrice != null ? String(minPrice) : "");
+    setDraftMaxPrice(maxPrice != null ? String(maxPrice) : "");
+    setDraftAvailability(availability);
+  }, [category, brand, color, size, minPrice, maxPrice, availability]);
+
+  const apply = () => {
+    onApply({
+      category: draftCategory || null,
+      brand: draftBrand || null,
+      color: draftColor || null,
+      size: draftSize || null,
+      minPrice: draftMinPrice || null,
+      maxPrice: draftMaxPrice || null,
+      availability: draftAvailability || null,
+    });
   };
+
+  const pillClass = (active: boolean) =>
+    `rounded-full border px-3 py-1.5 text-sm ${active ? "border-luxe-ink bg-luxe-ink text-white" : "border-luxe-border bg-luxe-bg text-luxe-ink"}`;
+
   return (
     <div className="space-y-6">
       <div>
-        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">
-          Категория
-        </p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Категория</p>
         <div className="flex flex-wrap gap-2">
-          {!isSheet && (
-            <Link
-              href={base + (category ? setParams(getCurrent({ category: null })) : "")}
-              className={`rounded-full px-3 py-1.5 text-sm ${
-                !category ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-              }`}
-            >
-              Все
-            </Link>
-          )}
-          {isSheet && (
-            <button
-              type="button"
-              onClick={() => applyParams(getCurrent({ category: null }))}
-              className={`rounded-full px-3 py-1.5 text-sm ${
-                !category ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-              }`}
-            >
-              Все
+          <button type="button" onClick={() => setDraftCategory("")} className={pillClass(!draftCategory)}>Все</button>
+          {CATEGORIES.map((c: Category) => (
+            <button key={c.slug} type="button" onClick={() => setDraftCategory(c.slug)} className={pillClass(draftCategory === c.slug)}>
+              {c.name}
             </button>
-          )}
-          {CATEGORIES.map((c: Category) =>
-            isSheet ? (
-              <button
-                key={c.slug}
-                type="button"
-                onClick={() => applyParams(getCurrent({ category: c.slug }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  category === c.slug ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                {c.name}
-              </button>
-            ) : (
-              <Link
-                key={c.slug}
-                href={base + setParams(getCurrent({ category: c.slug }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  category === c.slug ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                {c.name}
-              </Link>
-            )
-          )}
+          ))}
         </div>
       </div>
+
       <div>
-        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">
-          Бренд
-        </p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Бренд</p>
         <select
-          value={brand}
-          onChange={(e) => nav(getCurrent({ brand: e.target.value || null }))}
-          className="w-full rounded-lg border border-luxe-border bg-white px-3 py-2 text-sm text-luxe-ink"
+          value={draftBrand}
+          onChange={(e) => setDraftBrand(e.target.value)}
+          className="w-full border border-luxe-border bg-white px-3 py-2 text-sm text-luxe-ink"
         >
           <option value="">Все</option>
           {BRANDS.map((b) => (
@@ -254,193 +254,79 @@ function FilterForm({
           ))}
         </select>
       </div>
+
       <div>
-        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">
-          Цена
-        </p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Цена</p>
         <div className="flex gap-2">
           <input
             type="number"
             placeholder="От"
-            defaultValue={minPrice ?? ""}
-            className="w-full rounded-lg border border-luxe-border px-3 py-2 text-sm"
-            onBlur={(e) => nav(getCurrent({ minPrice: e.target.value ? e.target.value : null }))}
+            value={draftMinPrice}
+            onChange={(e) => setDraftMinPrice(e.target.value)}
+            className="no-spinner w-full border border-luxe-border px-3 py-2 text-sm"
           />
           <input
             type="number"
             placeholder="До"
-            defaultValue={maxPrice ?? ""}
-            className="w-full rounded-lg border border-luxe-border px-3 py-2 text-sm"
-            onBlur={(e) => nav(getCurrent({ maxPrice: e.target.value ? e.target.value : null }))}
+            value={draftMaxPrice}
+            onChange={(e) => setDraftMaxPrice(e.target.value)}
+            className="no-spinner w-full border border-luxe-border px-3 py-2 text-sm"
           />
         </div>
       </div>
+
       <div>
-        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">
-          Цвет
-        </p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Цвет</p>
         <div className="flex flex-wrap gap-2">
-          {isSheet ? (
-            <button
-              type="button"
-              onClick={() => applyParams(getCurrent({ color: null }))}
-              className={`rounded-full px-3 py-1.5 text-sm ${
-                !color ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-              }`}
-            >
-              Все
+          <button type="button" onClick={() => setDraftColor("")} className={pillClass(!draftColor)}>Все</button>
+          {COLORS.map((c) => (
+            <button key={c} type="button" onClick={() => setDraftColor(c)} className={pillClass(draftColor === c)}>
+              {c}
             </button>
-          ) : (
-            <Link
-              href={base + setParams(getCurrent({ color: null }))}
-              className={`rounded-full px-3 py-1.5 text-sm ${
-                !color ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-              }`}
-            >
-              Все
-            </Link>
-          )}
-          {COLORS.map((c) =>
-            isSheet ? (
-              <button
-                key={c}
-                type="button"
-                onClick={() => applyParams(getCurrent({ color: c }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  color === c ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                {c}
-              </button>
-            ) : (
-              <Link
-                key={c}
-                href={base + setParams(getCurrent({ color: c }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  color === c ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                {c}
-              </Link>
-            )
-          )}
+          ))}
         </div>
       </div>
+
       <div>
-        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">
-          Размер
-        </p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Размер</p>
         <div className="flex flex-wrap gap-2">
-          {isSheet ? (
-            <button
-              type="button"
-              onClick={() => applyParams(getCurrent({ size: null }))}
-              className={`rounded-full px-3 py-1.5 text-sm ${
-                !size ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-              }`}
-            >
-              Все
+          <button type="button" onClick={() => setDraftSize("")} className={pillClass(!draftSize)}>Все</button>
+          {SIZES.map((s) => (
+            <button key={s} type="button" onClick={() => setDraftSize(s)} className={pillClass(draftSize === s)}>
+              {s}
             </button>
-          ) : (
-            <Link
-              href={base + setParams(getCurrent({ size: null }))}
-              className={`rounded-full px-3 py-1.5 text-sm ${
-                !size ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-              }`}
-            >
-              Все
-            </Link>
-          )}
-          {SIZES.map((s) =>
-            isSheet ? (
-              <button
-                key={s}
-                type="button"
-                onClick={() => applyParams(getCurrent({ size: s }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  size === s ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                {s}
-              </button>
-            ) : (
-              <Link
-                key={s}
-                href={base + setParams(getCurrent({ size: s }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  size === s ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                {s}
-              </Link>
-            )
-          )}
+          ))}
         </div>
       </div>
+
       <div>
-        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">
-          Наличие
-        </p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Наличие</p>
         <div className="flex flex-wrap gap-2">
-          {isSheet ? (
-            <>
-              <button
-                type="button"
-                onClick={() => applyParams(getCurrent({ availability: null }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  !availability ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                Все
-              </button>
-              <button
-                type="button"
-                onClick={() => applyParams(getCurrent({ availability: "in_stock" }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  availability === "in_stock" ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                В наличии
-              </button>
-              <button
-                type="button"
-                onClick={() => applyParams(getCurrent({ availability: "made_to_order" }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  availability === "made_to_order" ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                Под заказ
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                href={base + setParams(getCurrent({ availability: null }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  !availability ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                Все
-              </Link>
-              <Link
-                href={base + setParams(getCurrent({ availability: "in_stock" }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  availability === "in_stock" ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                В наличии
-              </Link>
-              <Link
-                href={base + setParams(getCurrent({ availability: "made_to_order" }))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
-                  availability === "made_to_order" ? "bg-luxe-ink text-white" : "bg-luxe-bg text-luxe-ink border border-luxe-border"
-                }`}
-              >
-                Под заказ
-              </Link>
-            </>
-          )}
+          <button type="button" onClick={() => setDraftAvailability("")} className={pillClass(!draftAvailability)}>Все</button>
+          <button type="button" onClick={() => setDraftAvailability("in_stock")} className={pillClass(draftAvailability === "in_stock")}>
+            В наличии
+          </button>
+          <button type="button" onClick={() => setDraftAvailability("made_to_order")} className={pillClass(draftAvailability === "made_to_order")}>
+            Под заказ
+          </button>
         </div>
+      </div>
+
+      <div className="sticky bottom-0 -mx-4 mt-2 grid grid-cols-2 gap-2 border-t border-luxe-border bg-white px-4 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <button
+          type="button"
+          onClick={onReset}
+          className="w-full border border-luxe-border py-3 text-xs uppercase tracking-label text-luxe-ink"
+        >
+          Сбросить
+        </button>
+        <button
+          type="button"
+          onClick={apply}
+          className="w-full bg-luxe-ink py-3 text-xs uppercase tracking-label text-white"
+        >
+          Применить
+        </button>
       </div>
     </div>
   );

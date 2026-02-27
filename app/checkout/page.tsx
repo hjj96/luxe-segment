@@ -149,7 +149,7 @@ export default function CheckoutPage() {
                 value="transfer"
                 checked
                 readOnly
-                className="text-luxe-ink"
+                className="radio-minimal"
               />
               <span className="text-sm text-luxe-ink">Банковский перевод</span>
             </label>
@@ -163,7 +163,7 @@ export default function CheckoutPage() {
                 value="standard"
                 checked={form.deliveryMethod === "standard"}
                 onChange={() => setForm((f) => ({ ...f, deliveryMethod: "standard" }))}
-                className="text-luxe-ink"
+                className="radio-minimal"
               />
               <span className="text-sm text-luxe-ink">Стандартная (2–3 недели)</span>
             </label>
@@ -174,7 +174,7 @@ export default function CheckoutPage() {
                 value="express"
                 checked={form.deliveryMethod === "express"}
                 onChange={() => setForm((f) => ({ ...f, deliveryMethod: "express" }))}
-                className="text-luxe-ink"
+                className="radio-minimal"
               />
               <span className="text-sm text-luxe-ink">Экспресс (5–12 дней)</span>
             </label>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "products": "node scripts/csv-to-products.cjs"
   },
   "dependencies": {
     "jose": "^5.10.0",

@@ -5,22 +5,14 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useCartFavorites } from "@/components/CartFavoritesProvider";
 import { useAuth } from "@/components/AuthProvider";
-import {
-  IconMenu,
-  IconX,
-  IconSearch,
-  IconGrid,
-  IconHeart,
-  IconCart,
-  IconUser,
-} from "./Icons";
+import { IconMenu, IconX, IconSearch, IconHeart, IconCart } from "./Icons";
 
-// Убрали "Главная" - логотип выполняет эту роль
-const NAV = [
-  { href: "/catalog", label: "Каталог", icon: IconGrid },
-  { href: "/favorites", label: "Избранное", icon: IconHeart },
-  { href: "/cart", label: "Корзина", icon: IconCart },
-  { href: "/account", label: "Аккаунт", icon: IconUser },
+const CATALOG_LINKS = [
+  { href: "/catalog", label: "Все" },
+  { href: "/catalog?category=clothing", label: "Одежда" },
+  { href: "/catalog?category=bags", label: "Сумки" },
+  { href: "/catalog?category=shoes", label: "Обувь" },
+  { href: "/catalog?category=accessories", label: "Аксессуары" },
 ];
 
 export function Header() {
@@ -32,157 +24,160 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (menuOpen) document.body.style.overflow = "hidden";
+    if (menuOpen || searchOpen) document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menuOpen]);
+  }, [menuOpen, searchOpen]);
 
   useEffect(() => {
     setMenuOpen(false);
+    setSearchOpen(false);
   }, [pathname]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = (e?: React.FormEvent | React.MouseEvent) => {
+    e?.preventDefault();
     if (searchQuery.trim()) {
+      setSearchOpen(false);
       window.location.href = `/catalog?search=${encodeURIComponent(searchQuery.trim())}`;
     }
   };
 
+  useEffect(() => {
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        setSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onEscape);
+    return () => window.removeEventListener("keydown", onEscape);
+  }, []);
+
   return (
     <header className="sticky top-0 z-30 bg-black text-white safe-area-padding">
-      <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        {/* Left: Search */}
-        <div className="flex items-center gap-2 flex-none min-w-0 max-w-[30%] sm:max-w-[35%]">
-          {searchOpen ? (
-            <form onSubmit={handleSearch} className="flex items-center gap-2 min-w-0 w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Поиск..."
-                autoFocus
-                className="bg-white/10 border border-white/20 px-3 py-1.5 text-sm text-white placeholder-white/60 focus:outline-none focus:border-white/40 w-full max-w-[180px] sm:max-w-[220px]"
-                onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
-              />
-              <button type="submit" className="text-white shrink-0">
-                <IconSearch size="sm" />
-              </button>
-            </form>
-          ) : (
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 text-xs uppercase tracking-nav text-white/90 hover:text-white shrink-0 whitespace-nowrap"
-              aria-label="Поиск"
-            >
-              <IconSearch size="sm" />
-              <span className="hidden sm:inline">Поиск</span>
-            </button>
-          )}
-        </div>
-
-        {/* Center: Logo */}
-        <Link
-          href="/"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl tracking-tight text-white sm:text-2xl z-10 pointer-events-auto"
-        >
-          Luxe Segment
-        </Link>
-
-        {/* Right: Nav (desktop) */}
-        <nav className="hidden items-center gap-4 md:gap-6 md:flex flex-none min-w-0 max-w-[40%] sm:max-w-[45%]">
-          {NAV.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center gap-2 text-xs uppercase tracking-nav transition-colors shrink-0 ${
-                pathname === href
-                  ? "text-white"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              <Icon size="sm" className="shrink-0" />
-              <span>{label}</span>
-              {href === "/cart" && cartCount > 0 && (
-                <span className="text-[10px] shrink-0">({cartCount})</span>
-              )}
-              {href === "/account" && user && (
-                <span className="h-1.5 w-1.5 rounded-full bg-green-400 shrink-0" title="Авторизован" />
-              )}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Mobile: cart + menu */}
-        <div className="flex items-center gap-1 md:hidden flex-none">
-          <Link
-            href="/cart"
-            className="relative flex items-center gap-2 p-2 text-white"
-            aria-label="Корзина"
-          >
-            <IconCart size="md" />
-            {cartCount > 0 && (
-              <span className="text-[10px]">({cartCount})</span>
-            )}
-          </Link>
+      <div className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
+        <div className="flex w-[88px] items-center justify-start gap-1">
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className="p-2 text-white"
+            className="flex h-9 w-9 shrink-0 items-center justify-center text-white/90 hover:text-white transition-colors"
             aria-label="Меню"
           >
             <IconMenu size="md" />
           </button>
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="flex h-9 w-9 shrink-0 items-center justify-center text-white/90 hover:text-white transition-colors"
+            aria-label="Поиск"
+          >
+            <IconSearch size="md" />
+          </button>
+        </div>
+
+        {/* Логотип LS */}
+        <Link
+          href="/"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-lg tracking-[0.2em] font-light text-white sm:text-xl z-10"
+        >
+          LS
+        </Link>
+
+        {/* Избранное и Корзина */}
+        <div className="flex w-[88px] items-center justify-end gap-1">
+          <Link
+            href="/favorites"
+            className="flex h-9 w-9 items-center justify-center text-white/90 hover:text-white transition-colors"
+            aria-label="Избранное"
+          >
+            <IconHeart size="md" filled className="text-white" />
+          </Link>
+          <Link
+            href="/cart"
+            className="relative flex h-9 w-9 items-center justify-center text-white/90 hover:text-white transition-colors"
+            aria-label="Корзина"
+          >
+            <IconCart size="md" />
+            {cartCount > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 h-4 min-w-4 rounded-full bg-white text-[10px] font-medium text-black flex items-center justify-center px-1">
+                {cartCount}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-40 bg-black/60 md:hidden"
-            onClick={() => setMenuOpen(false)}
-            aria-hidden
-          />
-          <div className="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col bg-black md:hidden">
-            <div className="flex items-center justify-between border-b border-white/20 px-4 py-4">
-              <span className="text-xs uppercase tracking-nav text-white/80">Меню</span>
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                className="p-2 text-white"
-                aria-label="Закрыть"
-              >
-                <IconX size="md" />
-              </button>
-            </div>
-            <nav className="flex flex-1 flex-col gap-0 overflow-auto py-4">
-              <Link
-                href="/"
-                className={`flex items-center gap-3 border-b border-white/10 px-6 py-4 text-sm uppercase tracking-nav ${
-                  pathname === "/" ? "text-white" : "text-white/80"
-                }`}
-              >
-                <span>Главная</span>
-              </Link>
-              {NAV.map(({ href, label, icon: Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`flex items-center gap-3 border-b border-white/10 px-6 py-4 text-sm uppercase tracking-nav ${
-                    pathname === href ? "text-white" : "text-white/80"
-                  }`}
-                >
-                  <Icon size="sm" className="shrink-0" />
-                  <span>{label}</span>
-                  {href === "/cart" && cartCount > 0 && (
-                    <span className="ml-auto">({cartCount})</span>
-                  )}
-                </Link>
-              ))}
-            </nav>
+      {/* Полноэкранный поиск */}
+      {searchOpen && (
+        <div className="fixed inset-0 z-50 bg-black flex flex-col" role="dialog" aria-modal="true" aria-label="Поиск">
+          <div className="flex items-center justify-between px-4 py-4 safe-area-padding border-b border-white/10">
+            <form onSubmit={handleSearch} className="flex-1 flex items-center gap-3">
+              <IconSearch size="lg" className="text-white shrink-0" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Поиск"
+                autoFocus
+                className="flex-1 bg-transparent text-white text-lg placeholder-white/40 focus:outline-none"
+              />
+            </form>
+            <button
+              type="button"
+              onClick={() => setSearchOpen(false)}
+              className="p-2 text-white/80 hover:text-white"
+              aria-label="Закрыть"
+            >
+              <IconX size="lg" />
+            </button>
           </div>
-        </>
+          <div className="flex-1 p-4">
+            <button
+              type="button"
+              onClick={handleSearch}
+              className="w-full py-4 border border-white/20 text-white/90 hover:bg-white/5 transition-colors text-sm uppercase tracking-[0.1em]"
+            >
+              Искать
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Боковое меню на весь экран */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 bg-black flex flex-col" role="dialog" aria-modal="true" aria-label="Меню">
+          <div className="flex items-center justify-end px-4 py-4 safe-area-padding border-b border-white/10">
+            <button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              className="p-2 text-white/80 hover:text-white"
+              aria-label="Закрыть"
+            >
+              <IconX size="lg" />
+            </button>
+          </div>
+          <nav className="flex-1 flex flex-col px-6 py-6 gap-0">
+            <Link
+              href="/account"
+              onClick={() => setMenuOpen(false)}
+              className="py-4 text-xl tracking-[0.05em] text-white/90 hover:text-white transition-colors border-b border-white/10"
+            >
+              {user ? "Аккаунт" : "Войти в аккаунт"}
+              {user && <span className="ml-2 inline-block h-2 w-2 rounded-full bg-emerald-400" />}
+            </Link>
+            {CATALOG_LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="py-4 text-xl tracking-[0.05em] border-b border-white/10 text-white/90 hover:text-white transition-colors"
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       )}
     </header>
   );
