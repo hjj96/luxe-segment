@@ -1,4 +1,4 @@
-// Автоматически сгенерировано из data/products.csv. Не редактировать вручную.
+// Автоматически сгенерировано из data/products.xlsx. Не редактировать вручную.
 // Запустите: npm run products
 
 import type { Product } from "./types";
@@ -49,7 +49,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     inStock: false,
     madeToOrder: true,
     colors: ["Чёрный", "Бордовый"],
-    sizes: [],
+    sizes: ["20x25 cm"],
     createdAt: "2025-02-25T09:00:00Z",
   },
   {
@@ -86,6 +86,38 @@ export const GENERATED_PRODUCTS: Product[] = [
   },
   {
     id: "6",
+    name: "Шерстяной свитер",
+    brand: "The Row",
+    price: 78000,
+    currency: "₽",
+    description: "Объёмный свитер из чистой шерсти мерено.",
+    category: "clothing",
+    images: ["/img/p6.jpg"],
+    specs: [{ label: "Материал", value: "100% шерсть мерено" }, { label: "Цвет", value: "Оливковый" }],
+    inStock: true,
+    madeToOrder: false,
+    colors: ["Оливковый", "Серый", "Чёрный"],
+    sizes: ["S", "M", "L"],
+    createdAt: "2025-03-03T08:00:00Z",
+  },
+  {
+    id: "7",
+    name: "Шерстяной свитер",
+    brand: "The Row",
+    price: 78000,
+    currency: "₽",
+    description: "Объёмный свитер из чистой шерсти мерено.",
+    category: "clothing",
+    images: ["/img/p6.jpg"],
+    specs: [{ label: "Материал", value: "100% шерсть мерено" }, { label: "Цвет", value: "Оливковый" }],
+    inStock: true,
+    madeToOrder: false,
+    colors: ["Оливковый", "Серый", "Чёрный"],
+    sizes: [],
+    createdAt: "2025-03-03T08:00:00Z",
+  },
+  {
+    id: "8",
     name: "Шерстяной свитер",
     brand: "The Row",
     price: 78000,
