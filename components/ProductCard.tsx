@@ -52,18 +52,23 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
           )}
         </div>
-        <div className="mt-5 space-y-1">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-luxe-mute">
-            {product.brand}
-          </p>
+      </Link>
+      <div className="mt-5 space-y-1">
+        <Link
+          href={`/catalog?brand=${encodeURIComponent(product.brand)}`}
+          className="inline-block text-[10px] uppercase tracking-[0.2em] text-luxe-mute hover:text-luxe-ink transition-colors"
+        >
+          {product.brand}
+        </Link>
+        <Link href={`/product/${product.id}`} className="block">
           <p className="text-sm text-luxe-ink line-clamp-2 leading-relaxed">
             {product.name}
           </p>
           <p className="text-sm font-light tracking-wide text-luxe-ink mt-2">
             {product.price.toLocaleString("ru-RU")} {product.currency}
           </p>
-        </div>
-      </Link>
+        </Link>
+      </div>
       <button
         type="button"
         onClick={(e) => {
