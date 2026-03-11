@@ -12,7 +12,7 @@ export default function DeliveryPage() {
         <section className="border-b border-luxe-border pb-8">
           <div className="mt-1 grid gap-3 text-sm text-luxe-mute sm:grid-cols-2">
             <div>
-              <p className="text-[11px] uppercase tracking-label text-luxe-ink">
+              <p className="text-sm font-medium text-luxe-ink">
                 Сроки
               </p>
               <p className="mt-1 leading-relaxed">
@@ -20,7 +20,7 @@ export default function DeliveryPage() {
               </p>
             </div>
             <div>
-              <p className="text-[11px] uppercase tracking-label text-luxe-ink">
+              <p className="text-sm font-medium text-luxe-ink">
                 Стоимость
               </p>
               <p className="mt-1 leading-relaxed">
@@ -54,10 +54,12 @@ export default function DeliveryPage() {
         </section>
 
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="section-title text-center text-base sm:text-lg">
-            Гарантии
-          </h2>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
+          <div className="mb-6 flex items-center gap-4">
+            <div className="h-px flex-1 bg-luxe-border" />
+            <h2 className="section-title whitespace-nowrap">Гарантии</h2>
+            <div className="h-px flex-1 bg-luxe-border" />
+          </div>
+          <p className="text-sm text-luxe-mute leading-relaxed">
             Мы всегда идём навстречу клиентам. Если выявляется производственный брак — товар можно вернуть или обменять.
           </p>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
@@ -67,10 +69,12 @@ export default function DeliveryPage() {
         </section>
 
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="section-title text-center text-base sm:text-lg">
-            Оплата
-          </h2>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
+          <div className="mb-6 flex items-center gap-4">
+            <div className="h-px flex-1 bg-luxe-border" />
+            <h2 className="section-title whitespace-nowrap">Оплата</h2>
+            <div className="h-px flex-1 bg-luxe-border" />
+          </div>
+          <p className="text-sm text-luxe-mute leading-relaxed">
             Оплата происходит только после того, как мы согласуем с вами все нюансы заказа — модель, размеры, сроки и детали доставки.
           </p>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
