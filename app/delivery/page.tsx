@@ -10,7 +10,7 @@ export default function DeliveryPage() {
       </div>
       <div className="mt-10 space-y-10 text-luxe-ink">
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Кратко о доставке</h2>
+          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Доставка</h2>
           <div className="mt-3 grid gap-3 text-sm text-luxe-mute sm:grid-cols-2">
             <div>
               <p className="text-[11px] uppercase tracking-label text-luxe-ink">
@@ -50,23 +50,6 @@ export default function DeliveryPage() {
               <span className="text-luxe-ink">4.</span> Организация доставки по всей России.
             </li>
           </ul>
-        </section>
-
-        <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Доставка</h2>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            В срок 15–20 дней уже заложены все этапы пути изделия:
-          </p>
-          <ul className="mt-2 space-y-1 text-sm text-luxe-mute leading-relaxed">
-            <li>— изготовление позиции на фабрике;</li>
-            <li>— проверка качества в нашем офисе в Китае;</li>
-            <li>— при необходимости — обмен на новый экземпляр;</li>
-            <li>— доставка в Москву;</li>
-            <li>— отправка по России через СДЭК (в пункт выдачи или курьером до двери).</li>
-          </ul>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            <span className="font-medium text-luxe-ink">Никаких скрытых доплат нет:</span> полная стоимость доставки включена в цену товара.
-          </p>
         </section>
 
         <section className="border-b border-luxe-border pb-8">
