@@ -83,7 +83,7 @@ export default function DeliveryPage() {
           </p>
         </section>
 
-        <section>
+        <section className="border-t border-luxe-border pt-8">
           <p className="text-sm text-luxe-mute leading-relaxed">
             Если у вас возникают любые вопросы — просто напишите нам в Telegram. Мы всегда на связи и готовы помочь.
           </p>
