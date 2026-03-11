@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { getAuthType, normalizePhone } from "@/lib/auth";
@@ -13,6 +13,12 @@ export default function AccountPage() {
   const [error, setError] = useState("");
   const [loadingAction, setLoadingAction] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
+  const [pwEmail, setPwEmail] = useState("");
+  const [pwPassword, setPwPassword] = useState("");
+  const [pwMode, setPwMode] = useState<"login" | "register">("login");
+  const [pwLoading, setPwLoading] = useState(false);
+  const [orders, setOrders] = useState<any[] | null>(null);
+  const [ordersLoading, setOrdersLoading] = useState(false);
 
   const handleRequestCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +82,44 @@ export default function AccountPage() {
     setPhoneOrEmail("");
     setCode("");
     setCodeSent(false);
+    setPwEmail("");
+    setPwPassword("");
+    setPwMode("login");
+    setOrders(null);
+  };
+
+  const handlePasswordAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setPwLoading(true);
+
+    try {
+      const endpoint =
+        pwMode === "login"
+          ? "/api/auth/login-password"
+          : "/api/auth/register-password";
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: pwEmail, password: pwPassword }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Ошибка при входе");
+        return;
+      }
+
+      login(data.user);
+      setStep("logged");
+      setPwPassword("");
+    } catch (err) {
+      setError("Ошибка соединения. Попробуйте позже.");
+    } finally {
+      setPwLoading(false);
+    }
   };
 
   if (loading) {
@@ -96,6 +140,23 @@ export default function AccountPage() {
       ? normalizePhone(user?.phoneOrEmail || phoneOrEmail).replace(/^7/, "+7 ")
       : user?.phoneOrEmail || phoneOrEmail;
 
+    useEffect(() => {
+      const fetchOrders = async () => {
+        try {
+          setOrdersLoading(true);
+          const res = await fetch("/api/orders");
+          const data = await res.json();
+          setOrders(data.orders || []);
+        } catch (e) {
+          console.error("Failed to load orders", e);
+          setOrders([]);
+        } finally {
+          setOrdersLoading(false);
+        }
+      };
+      fetchOrders();
+    }, []);
+
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
         <div className="mb-10 flex items-center gap-4">
@@ -106,7 +167,7 @@ export default function AccountPage() {
           <div className="h-px flex-1 bg-luxe-border" />
         </div>
         
-        <div className="mt-8 space-y-6 border-t border-luxe-border pt-8">
+        <div className="mt-8 space-y-8 border-t border-luxe-border pt-8">
           <div>
             <p className="text-xs uppercase tracking-label text-luxe-mute mb-1">
               {authType === "phone" ? "Телефон" : "Email"}
@@ -114,7 +175,60 @@ export default function AccountPage() {
             <p className="text-sm text-luxe-ink">{displayValue}</p>
           </div>
 
-          <nav className="space-y-1">
+          <section>
+            <h2 className="text-xs uppercase tracking-label text-luxe-mute mb-3">
+              Мои заказы
+            </h2>
+            {ordersLoading && (
+              <p className="text-sm text-luxe-mute">Загрузка...</p>
+            )}
+            {!ordersLoading && orders && orders.length === 0 && (
+              <p className="text-sm text-luxe-mute">
+                Заказов пока нет. Оформите первый заказ в каталоге.
+              </p>
+            )}
+            {!ordersLoading && orders && orders.length > 0 && (
+              <div className="space-y-4">
+                {orders.map((order) => (
+                  <div
+                    key={order.id}
+                    className="border border-luxe-border px-3 py-3 text-sm"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-medium text-luxe-ink">
+                        Заказ от{" "}
+                        {new Date(order.created_at).toLocaleDateString("ru-RU")}
+                      </p>
+                      <p className="text-xs uppercase tracking-label text-luxe-mute">
+                        {order.delivery_method === "express"
+                          ? "Экспресс"
+                          : "Стандартная"}
+                      </p>
+                    </div>
+                    <p className="mt-2 text-sm text-luxe-mute">
+                      Итого:{" "}
+                      <span className="text-luxe-ink">
+                        {Number(order.total_amount).toLocaleString("ru-RU")} ₽
+                      </span>
+                    </p>
+                    {order.order_items && order.order_items.length > 0 && (
+                      <ul className="mt-2 space-y-1 text-xs text-luxe-mute">
+                        {order.order_items.map((item: any) => (
+                          <li key={item.id}>
+                            {item.brand} — {item.name}
+                            {item.size ? `, размер ${item.size}` : ""} ×{" "}
+                            {item.quantity}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <nav className="space-y-1 pt-2 border-t border-luxe-border">
             <Link
               href="/favorites"
               className="block py-3 text-luxe-ink hover:text-luxe-mute transition-colors"
@@ -155,7 +269,7 @@ export default function AccountPage() {
       </div>
       
       <p className="mt-2 text-sm text-luxe-mute">
-        Введите номер телефона или email — мы отправим код для входа.
+        Можно войти по коду (телефон или email) или по email и паролю.
       </p>
 
       {error && (
@@ -168,7 +282,7 @@ export default function AccountPage() {
         <form onSubmit={handleRequestCode} className="mt-8">
           <input
             type="text"
-            placeholder="Телефон или email"
+            placeholder="79XXXXXXXXX или email"
             value={phoneOrEmail}
             onChange={(e) => setPhoneOrEmail(e.target.value)}
             className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink focus:outline-none focus:border-luxe-ink transition-colors"
@@ -223,6 +337,68 @@ export default function AccountPage() {
           </button>
         </form>
       )}
+
+      <div className="mt-10 border-t border-luxe-border pt-8">
+        <h2 className="text-xs uppercase tracking-label text-luxe-mute">
+          Вход по email и паролю
+        </h2>
+        <div className="mt-3 flex gap-2 text-xs uppercase tracking-label">
+          <button
+            type="button"
+            onClick={() => setPwMode("login")}
+            className={`px-3 py-1 border ${
+              pwMode === "login"
+                ? "border-luxe-ink text-luxe-ink"
+                : "border-luxe-border text-luxe-mute"
+            }`}
+          >
+            Вход
+          </button>
+          <button
+            type="button"
+            onClick={() => setPwMode("register")}
+            className={`px-3 py-1 border ${
+              pwMode === "register"
+                ? "border-luxe-ink text-luxe-ink"
+                : "border-luxe-border text-luxe-mute"
+            }`}
+          >
+            Регистрация
+          </button>
+        </div>
+
+        <form onSubmit={handlePasswordAuth} className="mt-6 space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={pwEmail}
+            onChange={(e) => setPwEmail(e.target.value)}
+            className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink focus:outline-none focus:border-luxe-ink transition-colors"
+            required
+            disabled={pwLoading}
+          />
+          <input
+            type="password"
+            placeholder="Пароль"
+            value={pwPassword}
+            onChange={(e) => setPwPassword(e.target.value)}
+            className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink focus:outline-none focus:border-luxe-ink transition-colors"
+            required
+            disabled={pwLoading}
+          />
+          <button
+            type="submit"
+            disabled={pwLoading}
+            className="mt-2 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {pwLoading
+              ? "Отправка..."
+              : pwMode === "login"
+              ? "Войти"
+              : "Зарегистрироваться"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

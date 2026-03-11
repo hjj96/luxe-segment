@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuthType, normalizePhone } from "@/lib/auth";
 import { getStoredCode, deleteStoredCode } from "@/lib/codes";
 import { SignJWT } from "jose";
+import { supabase } from "@/lib/supabase";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "your-secret-key-change-in-production"
@@ -41,10 +42,30 @@ export async function POST(request: NextRequest) {
     // Удаление использованного кода
     deleteStoredCode(phoneOrEmail, authType);
 
+    // Создание/поиск профиля в Supabase
+    let profileId: string | null = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from("profiles")
+        .upsert(
+          { phone_or_email: normalized },
+          { onConflict: "phone_or_email" }
+        )
+        .select("id")
+        .single();
+
+      if (!error && data?.id) {
+        profileId = data.id;
+      } else if (error) {
+        console.error("Supabase profile upsert error:", error);
+      }
+    }
+
     // Создание JWT токена
     const token = await new SignJWT({ 
       phoneOrEmail: normalized,
       authType,
+      profileId,
     })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
@@ -54,7 +75,7 @@ export async function POST(request: NextRequest) {
     // Установка cookie
     const response = NextResponse.json({ 
       success: true,
-      user: { phoneOrEmail: normalized, authType }
+      user: { phoneOrEmail: normalized, authType, profileId }
     });
 
     response.cookies.set("auth-token", token, {

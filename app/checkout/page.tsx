@@ -10,6 +10,8 @@ import { IconTelegram } from "@/components/Icons";
 export default function CheckoutPage() {
   const { cart, cartCount, clearCart } = useCartFavorites();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -72,10 +74,34 @@ export default function CheckoutPage() {
 
   const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    clearCart();
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          items: cart,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Не удалось отправить заявку. Попробуйте ещё раз.");
+        return;
+      }
+
+      setSubmitted(true);
+      clearCart();
+    } catch (err) {
+      setError("Ошибка соединения. Попробуйте позже.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -89,6 +115,11 @@ export default function CheckoutPage() {
       </div>
       <form onSubmit={handleSubmit} className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
+          {error && (
+            <div className="mb-4 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </div>
+          )}
           <div>
             <label htmlFor="name" className="block text-xs uppercase tracking-label text-luxe-mute mb-2">
               Имя
@@ -99,7 +130,7 @@ export default function CheckoutPage() {
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+                className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
             />
           </div>
           <div>
@@ -112,7 +143,7 @@ export default function CheckoutPage() {
               required
               value={form.phone}
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-              className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+                className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
             />
           </div>
           <div>
@@ -125,7 +156,7 @@ export default function CheckoutPage() {
               required
               value={form.address}
               onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-              className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+                className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
             />
           </div>
           <div>
@@ -207,9 +238,10 @@ export default function CheckoutPage() {
             </p>
             <button
               type="submit"
-              className="mt-8 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white"
+              disabled={submitting}
+              className="mt-8 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Отправить заявку
+              {submitting ? "Отправка..." : "Отправить заявку"}
             </button>
           </div>
         </div>

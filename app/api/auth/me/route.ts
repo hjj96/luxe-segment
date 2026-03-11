@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
       user: {
         phoneOrEmail: payload.phoneOrEmail,
         authType: payload.authType,
+        profileId: payload.profileId ?? null,
       },
     });
   } catch (error) {

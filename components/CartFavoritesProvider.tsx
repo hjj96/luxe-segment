@@ -1,6 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useCallback, useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/components/AuthProvider";
 import type { CartItem } from "@/lib/types";
 
 const CART_KEY = "luxe-cart";
@@ -58,6 +60,7 @@ export function CartFavoritesProvider({ children }: { children: React.ReactNode 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     setCart(loadCart());
@@ -72,6 +75,48 @@ export function CartFavoritesProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     if (mounted) saveFavorites(favorites);
   }, [favorites, mounted]);
+
+  // Синхронизация избранного с Supabase при наличии профиля
+  useEffect(() => {
+    const syncFavorites = async () => {
+      if (!mounted || !user?.profileId || !supabase) return;
+      try {
+        const { data, error } = await supabase
+          .from("favorites")
+          .select("product_id")
+          .eq("profile_id", user.profileId);
+
+        if (error) {
+          console.error("Supabase favorites fetch error:", error);
+          return;
+        }
+
+        const serverFavs = (data || []).map((row: any) => row.product_id as string);
+
+        // Объединяем локальные и серверные, чтобы не потерять то, что было до логина
+        const localFavs = loadFavorites();
+        const merged = Array.from(new Set([...serverFavs, ...localFavs]));
+
+        setFavorites(merged);
+
+        // Записываем в Supabase новые (только отличия)
+        const toInsert = merged
+          .filter((id) => !serverFavs.includes(id))
+          .map((id) => ({ profile_id: user.profileId, product_id: id }));
+
+        if (toInsert.length) {
+          const { error: insertError } = await supabase.from("favorites").insert(toInsert);
+          if (insertError) {
+            console.error("Supabase favorites insert error:", insertError);
+          }
+        }
+      } catch (err) {
+        console.error("Favorites sync error:", err);
+      }
+    };
+
+    syncFavorites();
+  }, [mounted, user?.profileId]);
 
   const addToCart = useCallback((item: Omit<CartItem, "quantity">) => {
     const key = optionsKey(item.options);
@@ -116,10 +161,39 @@ export function CartFavoritesProvider({ children }: { children: React.ReactNode 
   );
 
   const toggleFavorite = useCallback((productId: string) => {
-    setFavorites((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
-    );
-  }, []);
+    setFavorites((prev) => {
+      const exists = prev.includes(productId);
+      const next = exists ? prev.filter((id) => id !== productId) : [...prev, productId];
+
+      // Обновляем Supabase, если есть профиль
+      if (supabase && (useAuth as any).currentUserProfileId) {
+        // заглушка; фактический апдейт будет происходить через отдельный эффект
+      }
+
+      if (supabase && (user as any)?.profileId) {
+        const profileId = (user as any).profileId as string;
+        if (exists) {
+          supabase
+            .from("favorites")
+            .delete()
+            .eq("profile_id", profileId)
+            .eq("product_id", productId)
+            .then(({ error }) => {
+              if (error) console.error("Supabase favorites delete error:", error);
+            });
+        } else {
+          supabase
+            .from("favorites")
+            .insert({ profile_id: profileId, product_id: productId })
+            .then(({ error }) => {
+              if (error) console.error("Supabase favorites insert error:", error);
+            });
+        }
+      }
+
+      return next;
+    });
+  }, [user]);
 
   const isFavorite = useCallback(
     (productId: string) => favorites.includes(productId),

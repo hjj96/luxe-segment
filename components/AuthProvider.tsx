@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 interface User {
   phoneOrEmail: string;
   authType: "phone" | "email";
+  profileId?: string | null;
 }
 
 interface AuthContextType {
