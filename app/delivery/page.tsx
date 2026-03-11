@@ -32,11 +32,14 @@ export default function DeliveryPage() {
         </section>
 
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Как мы работаем</h2>
+          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Маршрут изделия</h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
             Мы работаем уже более 10 лет и выстроили систему так, чтобы каждая позиция проходила многоступенчатую проверку качества.
           </p>
-          <ul className="mt-3 space-y-2 text-sm text-luxe-mute leading-relaxed">
+          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
+            В срок 15–20 дней уже заложены все этапы пути изделия:
+          </p>
+          <ul className="mt-2 space-y-2 text-sm text-luxe-mute leading-relaxed">
             <li>
               <span className="text-luxe-ink">1.</span> Производство на фабрике в Китае.
             </li>
@@ -47,7 +50,7 @@ export default function DeliveryPage() {
               <span className="text-luxe-ink">3.</span> Финальная проверка и отправка в наш офис в Москве.
             </li>
             <li>
-              <span className="text-luxe-ink">4.</span> Организация доставки по всей России.
+              <span className="text-luxe-ink">4.</span> Организация доставки по всей России через СДЭК — курьером до двери или в пункт выдачи.
             </li>
           </ul>
         </section>
@@ -60,6 +63,17 @@ export default function DeliveryPage() {
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
             В течение года после покупки мы обеспечиваем сервисную поддержку: ремонт или замену изделия при необходимости.
             Наша задача — чтобы вы были довольны не только в момент получения заказа, но и спустя время.
+          </p>
+        </section>
+
+        <section className="border-b border-luxe-border pb-8">
+          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Оплата</h2>
+          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
+            Оплата происходит только после того, как мы согласуем с вами все нюансы заказа — модель, размеры, сроки и детали доставки.
+          </p>
+          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
+            Мы работаем по системе предоплаты <span className="font-medium text-luxe-ink">50% / 50%</span> и принимаем оплату
+            банковским переводом по реквизитам. Счёт и инструкции отправляем вам в Telegram.
           </p>
         </section>
 
