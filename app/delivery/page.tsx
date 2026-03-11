@@ -30,7 +30,7 @@ export default function DeliveryPage() {
           </div>
         </section>
 
-        <section className="border-b border-luxe-border pb-8">
+        <section className="pb-8">
           <p className="text-sm text-luxe-mute leading-relaxed">
             Мы работаем уже более 10 лет и выстроили систему так, чтобы каждая позиция проходила многоступенчатую проверку качества.
           </p>
@@ -53,7 +53,7 @@ export default function DeliveryPage() {
           </ul>
         </section>
 
-        <section className="border-b border-luxe-border pb-8">
+        <section className="pb-8">
           <div className="mb-6 flex items-center gap-4">
             <div className="h-px flex-1 bg-luxe-border" />
             <h2 className="section-title whitespace-nowrap">Гарантии</h2>
