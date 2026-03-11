@@ -10,8 +10,7 @@ export default function DeliveryPage() {
       </div>
       <div className="mt-10 space-y-10 text-luxe-ink">
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Доставка</h2>
-          <div className="mt-3 grid gap-3 text-sm text-luxe-mute sm:grid-cols-2">
+          <div className="mt-1 grid gap-3 text-sm text-luxe-mute sm:grid-cols-2">
             <div>
               <p className="text-[11px] uppercase tracking-label text-luxe-ink">
                 Сроки
@@ -32,8 +31,7 @@ export default function DeliveryPage() {
         </section>
 
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Маршрут изделия</h2>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
+          <p className="text-sm text-luxe-mute leading-relaxed">
             Мы работаем уже более 10 лет и выстроили систему так, чтобы каждая позиция проходила многоступенчатую проверку качества.
           </p>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
@@ -56,7 +54,9 @@ export default function DeliveryPage() {
         </section>
 
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Гарантии</h2>
+          <h2 className="section-title text-left text-base sm:text-lg">
+            Гарантии
+          </h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
             Мы всегда идём навстречу клиентам. Если выявляется производственный брак — товар можно вернуть или обменять.
           </p>
@@ -67,12 +67,14 @@ export default function DeliveryPage() {
         </section>
 
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Оплата</h2>
+          <h2 className="section-title text-left text-base sm:text-lg">
+            Предоплата 50%
+          </h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
             Оплата происходит только после того, как мы согласуем с вами все нюансы заказа — модель, размеры, сроки и детали доставки.
           </p>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Мы работаем по системе предоплаты <span className="font-medium text-luxe-ink">50% / 50%</span> и принимаем оплату
+            Мы работаем по системе предоплаты <span className="font-medium text-luxe-ink">50%</span> от суммы заказа и принимаем оплату
             банковским переводом по реквизитам. Счёт и инструкции отправляем вам в Telegram.
           </p>
         </section>
