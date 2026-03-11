@@ -9,7 +9,7 @@ export default function DeliveryPage() {
         <div className="h-px flex-1 bg-luxe-border" />
       </div>
       <div className="mt-10 space-y-10 text-luxe-ink">
-        <section className="border-b border-luxe-border pb-8">
+        <section className="pb-8">
           <div className="mt-1 grid gap-3 text-sm text-luxe-mute sm:grid-cols-2">
             <div>
               <p className="text-sm font-medium text-luxe-ink">
@@ -68,7 +68,7 @@ export default function DeliveryPage() {
           </p>
         </section>
 
-        <section className="border-b border-luxe-border pb-8">
+        <section className="pb-8">
           <div className="mb-6 flex items-center gap-4">
             <div className="h-px flex-1 bg-luxe-border" />
             <h2 className="section-title whitespace-nowrap">Оплата</h2>
