@@ -12,23 +12,29 @@ export default function PaymentPage() {
         <section className="border-b border-luxe-border pb-8">
           <h2 className="text-sm uppercase tracking-label text-luxe-ink">Как проходит оплата</h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Мы работаем по системе предоплаты 50% после согласования всех деталей заказа.
+            Мы работаем по системе предоплаты: <span className="font-medium text-luxe-ink">50% / 50%</span>.
           </p>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Оставшиеся 50% оплачиваются после того, как товар поступает в наш офис в Москве и проходит финальную проверку перед отправкой вам.
-          </p>
+          <ol className="mt-3 space-y-2 text-sm text-luxe-mute leading-relaxed list-decimal list-inside">
+            <li>
+              После согласования всех деталей заказа вы оплачиваете <span className="font-medium text-luxe-ink">50% стоимости</span>.
+            </li>
+            <li>
+              Оставшиеся <span className="font-medium text-luxe-ink">50%</span> оплачиваются, когда товар поступает в наш офис в Москве и проходит финальную проверку перед отправкой вам.
+            </li>
+          </ol>
         </section>
         <section className="border-b border-luxe-border pb-8">
           <h2 className="text-sm uppercase tracking-label text-luxe-ink">Способ оплаты</h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Оплата происходит банковским переводом по реквизитам. Мы отправляем счёт и подробные инструкции в Telegram после согласования заказа.
+            Оплата происходит <span className="font-medium text-luxe-ink">банковским переводом по реквизитам</span>.
+            После согласования заказа мы отправляем вам счёт и подробные инструкции в Telegram.
           </p>
         </section>
         <section>
           <h2 className="text-sm uppercase tracking-label text-luxe-ink">Гарантии</h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Если после оплаты и доставки будет выявлен производственный брак, мы организуем обмен или возврат. В течение года после
-            покупки обеспечиваем сервисную поддержку и при необходимости замену изделия.
+            Если после оплаты и доставки будет выявлен производственный брак, мы организуем обмен или возврат.
+            В течение года после покупки обеспечиваем сервисную поддержку и при необходимости замену изделия.
           </p>
         </section>
       </div>

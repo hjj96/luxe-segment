@@ -20,6 +20,27 @@ export default function AccountPage() {
   const [orders, setOrders] = useState<any[] | null>(null);
   const [ordersLoading, setOrdersLoading] = useState(false);
 
+  // Загружаем заказы, когда пользователь залогинен
+  useEffect(() => {
+    if (!user && step !== "logged") return;
+
+    const fetchOrders = async () => {
+      try {
+        setOrdersLoading(true);
+        const res = await fetch("/api/orders");
+        const data = await res.json();
+        setOrders(data.orders || []);
+      } catch (e) {
+        console.error("Failed to load orders", e);
+        setOrders([]);
+      } finally {
+        setOrdersLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [user, step]);
+
   const handleRequestCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -136,26 +157,10 @@ export default function AccountPage() {
 
   if (user || step === "logged") {
     const authType = user?.authType || getAuthType(phoneOrEmail);
-    const displayValue = authType === "phone" 
-      ? normalizePhone(user?.phoneOrEmail || phoneOrEmail).replace(/^7/, "+7 ")
-      : user?.phoneOrEmail || phoneOrEmail;
-
-    useEffect(() => {
-      const fetchOrders = async () => {
-        try {
-          setOrdersLoading(true);
-          const res = await fetch("/api/orders");
-          const data = await res.json();
-          setOrders(data.orders || []);
-        } catch (e) {
-          console.error("Failed to load orders", e);
-          setOrders([]);
-        } finally {
-          setOrdersLoading(false);
-        }
-      };
-      fetchOrders();
-    }, []);
+    const displayValue =
+      authType === "phone"
+        ? normalizePhone(user?.phoneOrEmail || phoneOrEmail).replace(/^7/, "+7 ")
+        : user?.phoneOrEmail || phoneOrEmail;
 
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">

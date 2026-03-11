@@ -10,24 +10,52 @@ export default function DeliveryPage() {
       </div>
       <div className="mt-10 space-y-10 text-luxe-ink">
         <section className="border-b border-luxe-border pb-8">
-          <h2 className="text-sm uppercase tracking-label text-luxe-ink">О нас</h2>
+          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Кратко о доставке</h2>
+          <div className="mt-3 grid gap-3 text-sm text-luxe-mute sm:grid-cols-2">
+            <div>
+              <p className="text-[11px] uppercase tracking-label text-luxe-ink">
+                Сроки
+              </p>
+              <p className="mt-1 leading-relaxed">
+                Средний срок доставки — <span className="font-medium text-luxe-ink">15–20 дней</span> от момента подтверждения заказа.
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] uppercase tracking-label text-luxe-ink">
+                Стоимость
+              </p>
+              <p className="mt-1 leading-relaxed">
+                Доставка уже включена в цену товара — ничего дополнительно оплачивать не нужно.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-luxe-border pb-8">
+          <h2 className="text-sm uppercase tracking-label text-luxe-ink">Как мы работаем</h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
             Мы работаем уже более 10 лет и выстроили систему так, чтобы каждая позиция проходила многоступенчатую проверку качества.
-            Производство происходит на фабрике в Китае, далее товар проходит обязательную проверку в нашем офисе в Пекине. При малейших нюансах
-            мы запрашиваем замену на новый экземпляр.
           </p>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            После финальной проверки изделие отправляется в наш офис в Москве, откуда мы организуем доставку по всей России.
-          </p>
+          <ul className="mt-3 space-y-2 text-sm text-luxe-mute leading-relaxed">
+            <li>
+              <span className="text-luxe-ink">1.</span> Производство на фабрике в Китае.
+            </li>
+            <li>
+              <span className="text-luxe-ink">2.</span> Обязательная проверка в нашем офисе в Пекине. При малейших нюансах мы запрашиваем замену на новый экземпляр.
+            </li>
+            <li>
+              <span className="text-luxe-ink">3.</span> Финальная проверка и отправка в наш офис в Москве.
+            </li>
+            <li>
+              <span className="text-luxe-ink">4.</span> Организация доставки по всей России.
+            </li>
+          </ul>
         </section>
 
         <section className="border-b border-luxe-border pb-8">
           <h2 className="text-sm uppercase tracking-label text-luxe-ink">Доставка</h2>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Срок доставки составляет в среднем 15–20 дней.
-          </p>
-          <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            В этот срок входит:
+            В срок 15–20 дней уже заложены все этапы пути изделия:
           </p>
           <ul className="mt-2 space-y-1 text-sm text-luxe-mute leading-relaxed">
             <li>— изготовление позиции на фабрике;</li>
@@ -37,7 +65,7 @@ export default function DeliveryPage() {
             <li>— отправка по России через СДЭК (в пункт выдачи или курьером до двери).</li>
           </ul>
           <p className="mt-3 text-sm text-luxe-mute leading-relaxed">
-            Полная стоимость доставки уже включена в цену товара. Дополнительно ничего оплачивать не нужно.
+            <span className="font-medium text-luxe-ink">Никаких скрытых доплат нет:</span> полная стоимость доставки включена в цену товара.
           </p>
         </section>
 
