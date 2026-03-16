@@ -4,10 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { FilterSheet } from "@/components/FilterSheet";
-import { CATEGORIES, BRANDS, COLORS } from "@/lib/data";
+import { CATEGORIES } from "@/lib/data";
 import type { Product, Category } from "@/lib/types";
-
-const SIZES = ["S", "M", "L", "40", "41", "42", "43", "46", "48", "50", "52", "85", "90", "95", "100"];
 type SortValue = "newest" | "price_asc" | "price_desc";
 
 export function CatalogClient({ products }: { products: Product[] }) {
@@ -74,6 +72,27 @@ export function CatalogClient({ products }: { products: Product[] }) {
     });
   }, [products, search, category, brand, color, size, minPrice, maxPrice, availability, sort]);
 
+  // Динамические списки фильтров на основе текущих товаров
+  const { brands, colors, sizes } = useMemo(() => {
+    const brandSet = new Set<string>();
+    const colorSet = new Set<string>();
+    const sizeSet = new Set<string>();
+
+    for (const p of products) {
+      if (p.brand) brandSet.add(p.brand);
+      (p.colors || []).forEach((c) => c && colorSet.add(c));
+      (p.sizes || []).forEach((s) => s && sizeSet.add(s));
+    }
+
+    const sortAlpha = (arr: string[]) => arr.sort((a, b) => a.localeCompare(b, "ru"));
+
+    return {
+      brands: sortAlpha(Array.from(brandSet)),
+      colors: sortAlpha(Array.from(colorSet)),
+      sizes: Array.from(sizeSet).sort((a, b) => a.localeCompare(b, "ru", { numeric: true })),
+    };
+  }, [products]);
+
   const activeFiltersCount = [
     category,
     brand,
@@ -132,6 +151,9 @@ export function CatalogClient({ products }: { products: Product[] }) {
             brand={brand}
             color={color}
             size={size}
+            brands={brands}
+            colors={colors}
+            sizes={sizes}
             minPrice={minPrice}
             maxPrice={maxPrice}
             availability={availability}
@@ -157,6 +179,9 @@ export function CatalogClient({ products }: { products: Product[] }) {
           brand={brand}
           color={color}
           size={size}
+          brands={brands}
+          colors={colors}
+          sizes={sizes}
           minPrice={minPrice}
           maxPrice={maxPrice}
           availability={availability}
@@ -176,6 +201,9 @@ function FilterForm({
   brand,
   color,
   size,
+  brands,
+  colors,
+  sizes,
   minPrice,
   maxPrice,
   availability,
@@ -186,6 +214,9 @@ function FilterForm({
   brand: string;
   color: string;
   size: string;
+  brands: string[];
+  colors: string[];
+  sizes: string[];
   minPrice: number | null;
   maxPrice: number | null;
   availability: string;
@@ -247,7 +278,7 @@ function FilterForm({
           className="select-rect w-full border border-luxe-border bg-white px-3 py-2 text-sm text-luxe-ink"
         >
           <option value="">Все</option>
-          {BRANDS.map((b) => (
+          {brands.map((b) => (
             <option key={b} value={b}>
               {b}
             </option>
@@ -279,7 +310,7 @@ function FilterForm({
         <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Цвет</p>
         <div className="flex flex-wrap gap-2">
           <button type="button" onClick={() => setDraftColor("")} className={pillClass(!draftColor)}>Все</button>
-          {COLORS.map((c) => (
+          {colors.map((c) => (
             <button key={c} type="button" onClick={() => setDraftColor(c)} className={pillClass(draftColor === c)}>
               {c}
             </button>
@@ -291,7 +322,7 @@ function FilterForm({
         <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Размер</p>
         <div className="flex flex-wrap gap-2">
           <button type="button" onClick={() => setDraftSize("")} className={pillClass(!draftSize)}>Все</button>
-          {SIZES.map((s) => (
+          {sizes.map((s) => (
             <button key={s} type="button" onClick={() => setDraftSize(s)} className={pillClass(draftSize === s)}>
               {s}
             </button>
