@@ -3,6 +3,9 @@ import type { OrderRequest } from "@/lib/types";
 import { jwtVerify } from "jose";
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const ADMIN_EMAIL = "1996zviagintcev996@gmail.com";
 
 const JWT_SECRET = new TextEncoder().encode(
