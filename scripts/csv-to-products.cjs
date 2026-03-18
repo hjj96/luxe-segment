@@ -46,9 +46,11 @@ function normalizeRow(row) {
 
 function parseXlsx(filePath) {
   const workbook = XLSX.readFile(filePath);
-  const firstSheetName = workbook.SheetNames[0];
-  if (!firstSheetName) return [];
-  const sheet = workbook.Sheets[firstSheetName];
+  const sheetName =
+    workbook.SheetNames.find((n) => String(n).trim().toLowerCase() === "products") ||
+    workbook.SheetNames[0];
+  if (!sheetName) return [];
+  const sheet = workbook.Sheets[sheetName];
   const rows = XLSX.utils.sheet_to_json(sheet, {
     defval: "",
     raw: false,
@@ -58,7 +60,7 @@ function parseXlsx(filePath) {
 
 function parseBoolean(value) {
   const s = String(value ?? "").trim().toLowerCase();
-  return ["true", "1", "yes", "y", "да"].includes(s);
+  return ["true", "1", "yes", "y", "да", "истина"].includes(s);
 }
 
 function parsePrice(value) {
@@ -67,6 +69,49 @@ function parsePrice(value) {
     .replace(",", ".");
   const n = Number(normalized);
   return Number.isFinite(n) ? Math.round(n) : 0;
+}
+
+function parseDate(value) {
+  const s = String(value ?? "").trim();
+  if (!s) return "";
+  // dd.mm.yyyy
+  const m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (m) {
+    const dd = Number(m[1]);
+    const mm = Number(m[2]);
+    const yyyy = Number(m[3]);
+    const d = new Date(Date.UTC(yyyy, mm - 1, dd, 0, 0, 0));
+    if (!Number.isNaN(d.getTime())) return d.toISOString();
+  }
+  const d = new Date(s);
+  return Number.isNaN(d.getTime()) ? "" : d.toISOString();
+}
+
+function parseList(value, { allowSpaceSplit = false } = {}) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return [];
+
+  // comma-separated list
+  if (raw.includes(",")) {
+    return raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+
+  if (!allowSpaceSplit) return [raw];
+
+  // If looks like a dimension (e.g. "39x25x18.5 cm") keep as single
+  if (/[×x]\d/.test(raw) || /\bcm\b/i.test(raw)) return [raw];
+
+  const parts = raw.split(/\s+/).map((s) => s.trim()).filter(Boolean);
+  if (parts.length <= 1) return parts;
+
+  const isSizeToken = (t) =>
+    /^[0-9]{2,3}$/.test(t) || // shoe sizes like 35 36 37
+    /^(?:XS|S|M|L|XL|XXL|XXXL)$/i.test(t);
+
+  return parts.every(isSizeToken) ? parts : [raw];
 }
 
 function rowToProduct(row) {
@@ -84,16 +129,16 @@ function rowToProduct(row) {
     });
   }
 
-  const images = (row.images || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const colors = (row.colors || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const sizes = (row.sizes || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const images = parseList(row.images);
+  const colors = parseList(row.colors || row.color, { allowSpaceSplit: false });
+  const sizes = parseList(row.sizes, { allowSpaceSplit: true });
 
   return {
-    id: row.id || String(Date.now()),
+    id: row.id || row.sku || String(Date.now()),
     name: row.name || "Без названия",
     brand: row.brand || "",
     price: parsePrice(row.price),
-    currency: row.currency || "₽",
+    currency: row.currency || row.curr || "₽",
     description: row.description || "",
     category,
     images: images.length ? images : ["/img/placeholder.jpg"],
@@ -102,7 +147,7 @@ function rowToProduct(row) {
     madeToOrder: parseBoolean(row.madeToOrder),
     colors,
     sizes,
-    createdAt: row.createdAt || new Date().toISOString(),
+    createdAt: parseDate(row.createdAt) || new Date().toISOString(),
   };
 }
 
