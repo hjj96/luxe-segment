@@ -13,6 +13,17 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "your-secret-key-change-in-production"
 );
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.luxesegment.ru";
+
+function escapeHtml(value: unknown) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as OrderRequest;
@@ -35,7 +46,13 @@ export async function POST(request: NextRequest) {
           `<tr>
             <td style="padding:4px 8px;border-bottom:1px solid #eee;">${index + 1}</td>
             <td style="padding:4px 8px;border-bottom:1px solid #eee;">${item.brand}</td>
-            <td style="padding:4px 8px;border-bottom:1px solid #eee;">${item.name}</td>
+            <td style="padding:4px 8px;border-bottom:1px solid #eee;">
+              <a href="${SITE_URL}/product/${encodeURIComponent(
+                item.productId
+              )}" style="color:#111;text-decoration:underline;">
+                ${escapeHtml(item.name)}
+              </a>
+            </td>
             <td style="padding:4px 8px;border-bottom:1px solid #eee;">${
               item.options.size ? item.options.size : ""
             }</td>
