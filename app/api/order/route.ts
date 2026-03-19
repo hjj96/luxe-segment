@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const ADMIN_EMAIL = "1996zviagintcev996@gmail.com";
+const ADMIN_EMAIL = "1996zviagintcev1996@gmail.com";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "your-secret-key-change-in-production"
