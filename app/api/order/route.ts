@@ -6,7 +6,8 @@ import { supabase } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const ADMIN_EMAIL = "1996zviagintcev1996@gmail.com";
+const ADMIN_EMAIL =
+  process.env.ADMIN_EMAIL || "1996zviagintcev1996@gmail.com";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "your-secret-key-change-in-production"
@@ -151,8 +152,16 @@ export async function POST(request: NextRequest) {
     }
 
     if (!RESEND_API_KEY) {
+      console.error(
+        "[ORDER] RESEND_API_KEY is missing. Order will not be emailed.",
+        { to: ADMIN_EMAIL, from: fromEmail }
+      );
       console.log("[DEV] Новый заказ:", JSON.stringify({ ...body, total }, null, 2));
-      return NextResponse.json({ success: true, dev: true });
+      return NextResponse.json({
+        success: true,
+        dev: true,
+        reason: "RESEND_API_KEY missing",
+      });
     }
 
     const response = await fetch("https://api.resend.com/emails", {
@@ -171,11 +180,27 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Resend order email error:", errorText);
+      console.error("Resend order email error:", {
+        status: response.status,
+        to: ADMIN_EMAIL,
+        from: fromEmail,
+        errorText,
+      });
       return NextResponse.json(
-        { error: "Не удалось отправить заявку. Попробуйте позже." },
+        {
+          error: "Не удалось отправить заявку. Попробуйте позже.",
+          resend: { status: response.status, errorText },
+        },
         { status: 500 }
       );
+    }
+
+    // Resend обычно возвращает JSON, это поможет дебажить
+    try {
+      const data = await response.json();
+      console.log("[ORDER] Resend sent:", { to: ADMIN_EMAIL, id: data?.id });
+    } catch {
+      // no-op: sometimes response body isn't json
     }
 
     return NextResponse.json({ success: true });
