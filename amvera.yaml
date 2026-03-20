@@ -1,6 +1,5 @@
-# Экспорт из ЛК / manifest + настройки Next.js
-name: Luxesegment
-tariffId: "5"
+# Amvera Cloud — Next.js (Node.js Server)
+# https://docs.amvera.ru/applications/environments/nodejs-server.html
 
 meta:
   environment: node
