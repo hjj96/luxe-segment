@@ -18,7 +18,7 @@ export function InfoCards() {
               className="group relative block text-center pb-6 border-b border-luxe-border hover:border-luxe-ink transition-colors"
             >
               <div className="mb-4 flex justify-center">
-                <div className="h-12 w-12 rounded-full border border-luxe-border flex items-center justify-center group-hover:border-luxe-ink transition-colors">
+                <div className="flex h-12 w-12 items-center justify-center rounded-sm border border-luxe-border transition-colors group-hover:border-luxe-ink">
                   <span className="text-xs uppercase tracking-label text-luxe-mute group-hover:text-luxe-ink">
                     {idx + 1}
                   </span>

@@ -15,7 +15,6 @@ const PATH_NAMES: Record<string, string> = {
   "/warranty": "Гарантия",
 };
 
-// Функция для получения названия страницы из пути
 function getPathLabel(path: string): string {
   if (path.startsWith("/product/")) {
     return "Товар";
@@ -23,22 +22,46 @@ function getPathLabel(path: string): string {
   if (PATH_NAMES[path]) {
     return PATH_NAMES[path];
   }
-  const lastSegment = path.split("/").pop();
+  const lastSegment = path.split("/").filter(Boolean).pop();
   if (!lastSegment) return "";
+  if (lastSegment === "product") return "Каталог";
   return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
 }
 
 export function Breadcrumbs() {
   const pathname = usePathname();
 
-  // Только на каталоге и странице товара
   const show = pathname === "/catalog" || pathname.startsWith("/product/");
   if (!show) return null;
+
+  /* Страница товара: Главная → Каталог → Товар (без англ. «Product») */
+  if (pathname.startsWith("/product/")) {
+    return (
+      <nav
+        className="border-b border-luxe-border/70 bg-gradient-to-b from-[#fafaf9] to-luxe-bg-alt py-3.5 transition-colors"
+        aria-label="Хлебные крошки"
+      >
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-luxe-mute">
+            <Link href="/" className="hover:text-luxe-ink transition-colors duration-200">
+              Главная
+            </Link>
+            <span className="text-luxe-border/90">/</span>
+            <Link href="/catalog" className="hover:text-luxe-ink transition-colors duration-200">
+              Каталог
+            </Link>
+            <span className="text-luxe-border/90">/</span>
+            <span className="text-luxe-ink">Товар</span>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   const pathSegments = pathname.split("/").filter(Boolean);
   const breadcrumbs = [
     { href: "/", label: "Главная" },
-    ...pathSegments.map((segment, idx) => {
+    ...pathSegments.map((_, idx) => {
       const href = "/" + pathSegments.slice(0, idx + 1).join("/");
       return {
         href,
@@ -48,16 +71,19 @@ export function Breadcrumbs() {
   ];
 
   return (
-    <nav className="border-b border-luxe-border bg-luxe-bg-alt py-3">
+    <nav
+      className="border-b border-luxe-border/70 bg-gradient-to-b from-[#fafaf9] to-luxe-bg-alt py-3.5"
+      aria-label="Хлебные крошки"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="flex items-center gap-2 text-xs text-luxe-mute">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-luxe-mute">
           {breadcrumbs.map((crumb, idx) => (
             <span key={crumb.href} className="flex items-center gap-2">
-              {idx > 0 && <span className="text-luxe-border">/</span>}
+              {idx > 0 && <span className="text-luxe-border/90">/</span>}
               {idx === breadcrumbs.length - 1 ? (
                 <span className="text-luxe-ink">{crumb.label}</span>
               ) : (
-                <Link href={crumb.href} className="hover:text-luxe-ink transition-colors">
+                <Link href={crumb.href} className="hover:text-luxe-ink transition-colors duration-200">
                   {crumb.label}
                 </Link>
               )}

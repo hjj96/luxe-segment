@@ -55,7 +55,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 bg-black text-white safe-area-padding">
+    <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-black text-white shadow-[0_4px_24px_-8px_rgba(0,0,0,0.35)] safe-area-padding">
       <div className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
         <div className="flex w-[88px] items-center justify-start gap-1">
           <button
@@ -120,13 +120,13 @@ export function Header() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Поиск"
                 autoFocus
-                className="flex-1 bg-transparent text-white text-lg placeholder-white/40 focus:outline-none"
+                className="flex-1 rounded-sm border border-white/20 bg-white/5 px-3 py-2.5 text-lg text-white placeholder:text-white/40 transition-[border-color,box-shadow] focus:border-white/40 focus:ring-1 focus:ring-white/25"
               />
             </form>
             <button
               type="button"
               onClick={() => setSearchOpen(false)}
-              className="p-2 text-white/80 hover:text-white"
+              className="rounded-sm p-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Закрыть"
             >
               <IconX size="lg" />
@@ -136,7 +136,7 @@ export function Header() {
             <button
               type="button"
               onClick={handleSearch}
-              className="w-full py-4 border border-white/20 text-white/90 hover:bg-white/5 transition-colors text-sm uppercase tracking-[0.1em]"
+              className="w-full rounded-sm border border-white/20 py-4 text-sm uppercase tracking-[0.1em] text-white/90 transition-colors hover:bg-white/5"
             >
               Искать
             </button>
@@ -151,7 +151,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
-              className="p-2 text-white/80 hover:text-white"
+              className="rounded-sm p-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Закрыть"
             >
               <IconX size="lg" />

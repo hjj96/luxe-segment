@@ -20,7 +20,7 @@ export default function HomePage() {
         <div className="mt-14 flex justify-center">
           <Link
             href="/catalog"
-            className="inline-block border border-luxe-ink px-5 py-3 text-xs uppercase tracking-[0.18em] text-luxe-ink transition hover:bg-luxe-ink hover:text-white"
+            className="inline-block rounded-sm border border-luxe-ink px-5 py-3 text-xs uppercase tracking-[0.18em] text-luxe-ink transition hover:bg-luxe-ink hover:text-white"
           >
             Перейти каталог
           </Link>

@@ -46,14 +46,15 @@ export default function FavoritesPage() {
         {products.map((p) => (
           <article key={p.id} className="group relative">
             <Link href={`/product/${p.id}`}>
-              <div className="aspect-[3/4] overflow-hidden bg-luxe-bg-alt">
+              <div className="aspect-[3/4] overflow-hidden rounded-sm bg-luxe-bg-alt shadow-sm ring-1 ring-black/[0.04] transition-shadow duration-300 group-hover:shadow-card-hover">
                 <Image
-                  src={getProductImageUrl(p)}
+                  src={getProductImageUrl(p, 0, 640)}
                   alt={p.name}
                   width={400}
                   height={533}
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="h-full w-full object-cover transition group-hover:scale-[1.02]"
-                  unoptimized={getProductImageUrl(p).startsWith("https://placehold")}
+                  unoptimized={getProductImageUrl(p, 0, 640).startsWith("https://placehold")}
                 />
               </div>
               <div className="mt-3">
@@ -72,17 +73,17 @@ export default function FavoritesPage() {
                   name: p.name,
                   brand: p.brand,
                   price: p.price,
-                  image: getProductImageUrl(p),
+                  image: getProductImageUrl(p, 0, 640),
                   options: {},
                 })}
-                className="flex flex-1 items-center justify-center border border-luxe-ink py-2.5 text-xs uppercase tracking-label text-luxe-ink"
+                className="flex flex-1 items-center justify-center rounded-sm border border-luxe-ink py-2.5 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
               >
                 В корзину
               </button>
               <button
                 type="button"
                 onClick={() => toggleFavorite(p.id)}
-                className="flex items-center justify-center border border-luxe-border p-2.5 text-luxe-ink"
+                className="flex items-center justify-center rounded-sm border border-luxe-border p-2.5 text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
                 aria-label="Удалить из избранного"
               >
                 <IconHeart size="sm" filled />

@@ -4,7 +4,12 @@ import { TELEGRAM_CHANNEL } from "@/lib/data";
 export function Footer() {
   return (
     <footer className="bg-[#0a0a0a] text-white">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      {/* Плавный переход от светлого main к тёмному подвалу */}
+      <div
+        className="h-8 bg-gradient-to-b from-luxe-bg via-[#e8e6e4]/40 to-[#0a0a0a] sm:h-10"
+        aria-hidden
+      />
+      <div className="mx-auto max-w-6xl px-4 pb-12 pt-2 sm:px-6 sm:pb-16 sm:pt-0">
         <div className="text-center">
           <div className="space-y-4">
             <p className="text-lg tracking-[0.15em] font-light">LS</p>

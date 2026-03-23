@@ -34,7 +34,7 @@ export function FilterSheet({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-luxe-mute hover:text-luxe-ink"
+            className="rounded-sm p-2 text-luxe-mute transition-colors hover:bg-luxe-bg-alt hover:text-luxe-ink"
             aria-label="Закрыть"
           >
             <IconX size="md" />

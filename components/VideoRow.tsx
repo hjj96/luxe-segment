@@ -40,7 +40,7 @@ export function VideoRow({ videos }: { videos: HomeVideo[] }) {
               key={v.id}
               className="w-[220px] shrink-0 scroll-snap-align-start sm:w-[260px] md:w-[300px]"
             >
-              <div className="aspect-[9/16] overflow-hidden bg-luxe-bg relative group">
+              <div className="relative aspect-[9/16] overflow-hidden rounded-sm bg-luxe-bg ring-1 ring-black/[0.06] group">
                 <video
                   src={v.src}
                   poster={v.poster}
@@ -49,7 +49,7 @@ export function VideoRow({ videos }: { videos: HomeVideo[] }) {
                   loop
                   className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 border border-black/0 group-hover:border-black/10 transition-colors" />
+                <div className="pointer-events-none absolute inset-0 rounded-sm border border-black/0 transition-colors group-hover:border-black/10" />
               </div>
               {v.caption && (
                 <p className="mt-3 text-xs text-luxe-mute">{v.caption}</p>

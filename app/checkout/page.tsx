@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCartFavorites } from "@/components/CartFavoritesProvider";
 import { TELEGRAM_CHAT, TELEGRAM_CHANNEL } from "@/lib/data";
+import { optimizeCloudinaryDeliveryUrl } from "@/lib/cloudinary";
 import { IconTelegram } from "@/components/Icons";
 
 export default function CheckoutPage() {
@@ -53,7 +54,7 @@ export default function CheckoutPage() {
             href={TELEGRAM_CHAT}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 border border-luxe-ink px-6 py-3.5 text-xs uppercase tracking-label text-luxe-ink"
+            className="flex items-center justify-center gap-2 rounded-sm border border-luxe-ink px-6 py-3.5 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
           >
             <IconTelegram size="sm" />
             Написать в Telegram
@@ -62,7 +63,7 @@ export default function CheckoutPage() {
             href={TELEGRAM_CHANNEL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-luxe-ink px-6 py-3.5 text-xs uppercase tracking-label text-white"
+            className="flex items-center justify-center gap-2 rounded-sm bg-luxe-ink px-6 py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
           >
             <IconTelegram size="sm" />
             Канал Luxe Segment
@@ -116,7 +117,7 @@ export default function CheckoutPage() {
       <form onSubmit={handleSubmit} className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           {error && (
-            <div className="mb-4 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <div className="mb-4 rounded-sm border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </div>
           )}
@@ -130,7 +131,7 @@ export default function CheckoutPage() {
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+              className="luxe-input"
             />
           </div>
           <div>
@@ -143,7 +144,7 @@ export default function CheckoutPage() {
               required
               value={form.phone}
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+              className="luxe-input"
             />
           </div>
           <div>
@@ -156,7 +157,7 @@ export default function CheckoutPage() {
               required
               value={form.address}
               onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+              className="luxe-input"
             />
           </div>
           <div>
@@ -168,7 +169,7 @@ export default function CheckoutPage() {
               rows={3}
               value={form.comment}
               onChange={(e) => setForm((f) => ({ ...f, comment: e.target.value }))}
-              className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink"
+              className="luxe-textarea"
             />
           </div>
           <div>
@@ -217,11 +218,12 @@ export default function CheckoutPage() {
             <ul className="mt-3 space-y-2 max-h-60 overflow-y-auto">
               {cart.map((item) => (
                 <li key={item.productId + JSON.stringify(item.options)} className="flex gap-2 text-sm">
-                  <div className="relative h-12 w-10 shrink-0 overflow-hidden bg-luxe-bg-alt">
+                  <div className="relative h-12 w-10 shrink-0 overflow-hidden rounded-sm bg-luxe-bg-alt ring-1 ring-black/[0.04]">
                     <Image
-                      src={item.image}
+                      src={optimizeCloudinaryDeliveryUrl(item.image, 256)}
                       alt=""
                       fill
+                      sizes="40px"
                       className="object-cover"
                       unoptimized={item.image.startsWith("https://placehold")}
                     />
@@ -239,7 +241,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="mt-8 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white disabled:opacity-60 disabled:cursor-not-allowed"
+              className="mt-8 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? "Отправка..." : "Отправить заявку"}
             </button>

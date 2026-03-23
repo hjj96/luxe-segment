@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCartFavorites } from "@/components/CartFavoritesProvider";
 import { IconTrash } from "@/components/Icons";
+import { optimizeCloudinaryDeliveryUrl } from "@/lib/cloudinary";
 
 function optsKey(opts: { color?: string; size?: string }): string {
   return [opts.color ?? "", opts.size ?? ""].join("::");
@@ -53,11 +54,12 @@ export default function CartPage() {
             return (
               <div key={key} className="border-b border-luxe-border pb-8">
                 <div className="flex gap-3 sm:gap-6">
-                  <div className="relative h-28 w-24 shrink-0 overflow-hidden bg-luxe-bg-alt">
+                  <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-sm bg-luxe-bg-alt ring-1 ring-black/[0.04]">
                     <Image
-                      src={item.image}
+                      src={optimizeCloudinaryDeliveryUrl(item.image, 256)}
                       alt={item.name}
                       fill
+                      sizes="96px"
                       className="object-cover"
                       unoptimized={item.image.startsWith("https://placehold")}
                     />
@@ -83,7 +85,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => updateCartQuantity(item.productId, item.quantity - 1, optsKey(item.options))}
-                      className="h-8 w-8 border border-luxe-border text-luxe-ink"
+                      className="h-8 w-8 rounded-sm border border-luxe-border text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
                     >
                       −
                     </button>
@@ -91,7 +93,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => updateCartQuantity(item.productId, item.quantity + 1, optsKey(item.options))}
-                      className="h-8 w-8 border border-luxe-border text-luxe-ink"
+                      className="h-8 w-8 rounded-sm border border-luxe-border text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
                     >
                       +
                     </button>
@@ -99,7 +101,7 @@ export default function CartPage() {
                   <button
                     type="button"
                     onClick={() => removeFromCart(item.productId, optsKey(item.options))}
-                    className="flex h-8 w-8 items-center justify-center border border-luxe-border text-luxe-mute transition-colors hover:text-luxe-ink"
+                    className="flex h-8 w-8 items-center justify-center rounded-sm border border-luxe-border text-luxe-mute transition-colors hover:text-luxe-ink"
                     aria-label="Удалить из корзины"
                   >
                     <IconTrash size="sm" />
@@ -118,7 +120,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/checkout"
-              className="mt-8 block w-full bg-luxe-ink py-3.5 text-center text-xs uppercase tracking-label text-white"
+              className="mt-8 block w-full rounded-sm bg-luxe-ink py-3.5 text-center text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
             >
               Оформить заказ
             </Link>

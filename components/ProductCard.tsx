@@ -10,18 +10,20 @@ import type { Product } from "@/lib/types";
 export function ProductCard({ product }: { product: Product }) {
   const { toggleFavorite, isFavorite } = useCartFavorites();
   const fav = isFavorite(product.id);
-  const imgUrl = getProductImageUrl(product, 0);
-  const secondImgUrl = product.images.length > 1 ? getProductImageUrl(product, 1) : null;
+  const imgUrl = getProductImageUrl(product, 0, 640);
+  const secondImgUrl =
+    product.images.length > 1 ? getProductImageUrl(product, 1, 640) : null;
 
   return (
     <article className="group relative">
       <Link href={`/product/${product.id}`} className="block">
-        <div className="aspect-[3/4] overflow-hidden bg-[#f8f8f8] relative">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-luxe-bg-alt shadow-sm ring-1 ring-black/[0.04] transition-shadow duration-300 group-hover:shadow-card-hover">
           <Image
             src={imgUrl}
             alt={product.name}
             width={600}
             height={800}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className={`h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.03] ${secondImgUrl ? "group-hover:opacity-0" : ""}`}
             unoptimized={imgUrl.startsWith("https://placehold")}
           />
@@ -31,6 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
               alt=""
               width={600}
               height={800}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
               unoptimized={secondImgUrl.startsWith("https://placehold")}
             />

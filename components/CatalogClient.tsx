@@ -126,7 +126,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
         <button
           type="button"
           onClick={() => setFilterOpen(true)}
-          className="border border-luxe-border px-3 py-2 text-xs uppercase tracking-label text-luxe-ink md:hidden"
+          className="rounded-sm border border-luxe-border px-3 py-2 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt md:hidden"
         >
           Фильтры{activeFiltersCount > 0 ? ` (${activeFiltersCount})` : ""}
         </button>
@@ -135,7 +135,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
           <select
             value={sort}
             onChange={(e) => applyParams({ sort: e.target.value })}
-            className="select-rect border border-luxe-border bg-white px-3 py-2 text-xs uppercase tracking-label text-luxe-ink"
+            className="select-rect luxe-select text-xs uppercase tracking-label text-luxe-ink"
           >
             <option value="newest">По новизне</option>
             <option value="price_asc">Цена: по возрастанию</option>
@@ -254,7 +254,7 @@ function FilterForm({
   };
 
   const pillClass = (active: boolean) =>
-    `rounded-full border px-3 py-1.5 text-sm ${active ? "border-luxe-ink bg-luxe-ink text-white" : "border-luxe-border bg-luxe-bg text-luxe-ink"}`;
+    `rounded-sm border px-3 py-1.5 text-sm transition-colors ${active ? "border-luxe-ink bg-luxe-ink text-white" : "border-luxe-border bg-luxe-bg text-luxe-ink hover:border-luxe-ink/40"}`;
 
   return (
     <div className="space-y-6">
@@ -275,7 +275,7 @@ function FilterForm({
         <select
           value={draftBrand}
           onChange={(e) => setDraftBrand(e.target.value)}
-          className="select-rect w-full border border-luxe-border bg-white px-3 py-2 text-sm text-luxe-ink"
+          className="select-rect luxe-select"
         >
           <option value="">Все</option>
           {brands.map((b) => (
@@ -294,14 +294,14 @@ function FilterForm({
             placeholder="От"
             value={draftMinPrice}
             onChange={(e) => setDraftMinPrice(e.target.value)}
-            className="no-spinner w-full border border-luxe-border px-3 py-2 text-sm"
+            className="luxe-input no-spinner"
           />
           <input
             type="number"
             placeholder="До"
             value={draftMaxPrice}
             onChange={(e) => setDraftMaxPrice(e.target.value)}
-            className="no-spinner w-full border border-luxe-border px-3 py-2 text-sm"
+            className="luxe-input no-spinner"
           />
         </div>
       </div>
@@ -343,18 +343,18 @@ function FilterForm({
         </div>
       </div>
 
-      <div className="sticky bottom-0 -mx-4 mt-2 grid grid-cols-2 gap-2 border-t border-luxe-border bg-white px-4 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <div className="sticky bottom-0 -mx-4 mt-2 grid grid-cols-2 gap-2 rounded-t-xl border-t border-luxe-border bg-white px-4 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.06)]">
         <button
           type="button"
           onClick={onReset}
-          className="w-full border border-luxe-border py-3 text-xs uppercase tracking-label text-luxe-ink"
+          className="w-full rounded-sm border border-luxe-border py-3 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
         >
           Сбросить
         </button>
         <button
           type="button"
           onClick={apply}
-          className="w-full bg-luxe-ink py-3 text-xs uppercase tracking-label text-white"
+          className="w-full rounded-sm bg-luxe-ink py-3 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
         >
           Применить
         </button>

@@ -197,7 +197,7 @@ export default function AccountPage() {
                 {orders.map((order) => (
                   <div
                     key={order.id}
-                    className="border border-luxe-border px-3 py-3 text-sm"
+                    className="rounded-sm border border-luxe-border px-3 py-3 text-sm"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <p className="font-medium text-luxe-ink">
@@ -256,7 +256,7 @@ export default function AccountPage() {
 
           <button
             onClick={handleLogout}
-            className="mt-8 w-full border border-luxe-border py-3 text-xs uppercase tracking-label text-luxe-ink hover:bg-luxe-bg-alt transition-colors"
+            className="mt-8 w-full rounded-sm border border-luxe-border py-3 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
           >
             Выйти
           </button>
@@ -278,7 +278,7 @@ export default function AccountPage() {
       </p>
 
       {error && (
-        <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm">
+        <div className="mt-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -290,14 +290,14 @@ export default function AccountPage() {
             placeholder="79XXXXXXXXX или email"
             value={phoneOrEmail}
             onChange={(e) => setPhoneOrEmail(e.target.value)}
-            className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink focus:outline-none focus:border-luxe-ink transition-colors"
+            className="luxe-input"
             required
             disabled={loadingAction}
           />
           <button
             type="submit"
             disabled={loadingAction}
-            className="mt-6 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loadingAction ? "Отправка..." : "Получить код"}
           </button>
@@ -316,7 +316,7 @@ export default function AccountPage() {
             placeholder="Код из сообщения"
             value={code}
             onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink text-center tracking-widest focus:outline-none focus:border-luxe-ink transition-colors"
+            className="luxe-input text-center text-base tracking-[0.35em]"
             maxLength={6}
             required
             disabled={loadingAction}
@@ -324,7 +324,7 @@ export default function AccountPage() {
           <button
             type="submit"
             disabled={loadingAction || code.length < 4}
-            className="mt-6 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loadingAction ? "Проверка..." : "Войти"}
           </button>
@@ -351,7 +351,7 @@ export default function AccountPage() {
           <button
             type="button"
             onClick={() => setPwMode("login")}
-            className={`px-3 py-1 border ${
+            className={`rounded-sm px-3 py-1 border transition-colors ${
               pwMode === "login"
                 ? "border-luxe-ink text-luxe-ink"
                 : "border-luxe-border text-luxe-mute"
@@ -362,7 +362,7 @@ export default function AccountPage() {
           <button
             type="button"
             onClick={() => setPwMode("register")}
-            className={`px-3 py-1 border ${
+            className={`rounded-sm px-3 py-1 border transition-colors ${
               pwMode === "register"
                 ? "border-luxe-ink text-luxe-ink"
                 : "border-luxe-border text-luxe-mute"
@@ -378,7 +378,7 @@ export default function AccountPage() {
             placeholder="Email"
             value={pwEmail}
             onChange={(e) => setPwEmail(e.target.value)}
-            className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink focus:outline-none focus:border-luxe-ink transition-colors"
+            className="luxe-input"
             required
             disabled={pwLoading}
           />
@@ -387,14 +387,14 @@ export default function AccountPage() {
             placeholder="Пароль"
             value={pwPassword}
             onChange={(e) => setPwPassword(e.target.value)}
-            className="w-full border-b border-luxe-border bg-transparent px-0 py-3 text-luxe-ink focus:outline-none focus:border-luxe-ink transition-colors"
+            className="luxe-input"
             required
             disabled={pwLoading}
           />
           <button
             type="submit"
             disabled={pwLoading}
-            className="mt-2 w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-2 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {pwLoading
               ? "Отправка..."

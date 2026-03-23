@@ -14,7 +14,7 @@ export function ProductClient({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState<string>(product.sizes.length > 0 ? product.sizes[0] : "");
   const fav = isFavorite(product.id);
 
-  const imageUrl = getProductImageUrl(product, currentImage);
+  const imageUrl = getProductImageUrl(product, currentImage, 1100);
 
   const handleAddToCart = () => {
     addToCart({
@@ -22,7 +22,7 @@ export function ProductClient({ product }: { product: Product }) {
       name: product.name,
       brand: product.brand,
       price: product.price,
-      image: getProductImageUrl(product),
+      image: getProductImageUrl(product, 0, 640),
       options: {
         ...(product.colors.length ? { color: selectedColor } : {}),
         ...(product.sizes.length ? { size: selectedSize } : {}),
@@ -35,7 +35,7 @@ export function ProductClient({ product }: { product: Product }) {
       <button
         type="button"
         onClick={handleAddToCart}
-        className="flex-1 min-w-0 bg-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-white"
+        className="flex-1 min-w-0 rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-white transition-opacity hover:opacity-95 active:opacity-90"
       >
         В корзину
       </button>
@@ -43,7 +43,7 @@ export function ProductClient({ product }: { product: Product }) {
         href={TELEGRAM_CHAT}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex flex-1 min-w-0 items-center justify-center gap-2 border border-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-luxe-ink"
+        className="flex flex-1 min-w-0 items-center justify-center gap-2 rounded-sm border border-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
       >
         <IconTelegram size="sm" />
         <span className="truncate">Telegram</span>
@@ -62,12 +62,13 @@ export function ProductClient({ product }: { product: Product }) {
       </div>
       <div className="grid gap-10 md:grid-cols-2 md:gap-14">
         <div className="space-y-4">
-          <div className="aspect-[3/4] overflow-hidden bg-luxe-bg-alt">
+          <div className="aspect-[3/4] overflow-hidden rounded-sm bg-luxe-bg-alt shadow-sm ring-1 ring-black/[0.04]">
             <Image
               src={imageUrl}
               alt={product.name}
               width={600}
               height={800}
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="h-full w-full object-cover"
               unoptimized={imageUrl.startsWith("https://placehold")}
               priority
@@ -80,17 +81,20 @@ export function ProductClient({ product }: { product: Product }) {
                   key={i}
                   type="button"
                   onClick={() => setCurrentImage(i)}
-                  className={`relative h-20 w-14 shrink-0 overflow-hidden border ${
+                  className={`relative h-20 w-14 shrink-0 overflow-hidden rounded-sm border transition-colors ${
                     currentImage === i ? "border-luxe-ink" : "border-luxe-border"
                   }`}
                 >
                   <Image
-                    src={getProductImageUrl(product, i)}
+                    src={getProductImageUrl(product, i, 200)}
                     alt=""
                     width={56}
                     height={80}
+                    sizes="56px"
                     className="h-full w-full object-cover"
-                    unoptimized={getProductImageUrl(product, i).startsWith("https://placehold")}
+                    unoptimized={getProductImageUrl(product, i, 200).startsWith(
+                      "https://placehold"
+                    )}
                   />
                 </button>
               ))}
@@ -126,7 +130,7 @@ export function ProductClient({ product }: { product: Product }) {
                     key={c}
                     type="button"
                     onClick={() => setSelectedColor(c)}
-                    className={`border px-3 py-1.5 text-xs uppercase tracking-label transition-colors ${
+                    className={`rounded-sm border px-3 py-1.5 text-xs uppercase tracking-label transition-colors ${
                       selectedColor === c
                         ? "border-luxe-ink bg-luxe-ink text-white"
                         : "border-luxe-border text-luxe-ink hover:border-luxe-ink"
@@ -149,7 +153,7 @@ export function ProductClient({ product }: { product: Product }) {
                     key={s}
                     type="button"
                     onClick={() => setSelectedSize(s)}
-                    className={`border px-3 py-1.5 text-xs uppercase tracking-label transition-colors ${
+                    className={`rounded-sm border px-3 py-1.5 text-xs uppercase tracking-label transition-colors ${
                       selectedSize === s
                         ? "border-luxe-ink bg-luxe-ink text-white"
                         : "border-luxe-border text-luxe-ink hover:border-luxe-ink"
@@ -165,7 +169,7 @@ export function ProductClient({ product }: { product: Product }) {
             <button
               type="button"
               onClick={() => toggleFavorite(product.id)}
-              className="flex w-full items-center justify-center gap-2 border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink"
+              className="flex w-full items-center justify-center gap-2 rounded-sm border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
             >
               <IconHeart size="sm" filled={fav} className={fav ? "text-black" : ""} />
               {fav ? "В избранном" : "В избранное"}
@@ -175,7 +179,7 @@ export function ProductClient({ product }: { product: Product }) {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="w-full bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white"
+                className="w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
               >
                 В корзину
               </button>
@@ -183,7 +187,7 @@ export function ProductClient({ product }: { product: Product }) {
                 href={TELEGRAM_CHAT}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink"
+                className="flex w-full items-center justify-center gap-2 rounded-sm border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
               >
                 <IconTelegram size="sm" />
                 Консультация в Telegram
@@ -194,7 +198,7 @@ export function ProductClient({ product }: { product: Product }) {
       </div>
 
       {/* Мобильная фиксированная панель — всегда видна внизу экрана */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 border-t border-luxe-border bg-white p-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 rounded-t-xl border-t border-luxe-border/80 bg-white/95 p-4 shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.08)] backdrop-blur-sm pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden">
         {actionButtons}
       </div>
     </div>

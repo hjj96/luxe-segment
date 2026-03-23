@@ -25,13 +25,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body className="min-h-screen flex flex-col font-sans">
         <AuthProvider>
           <CartFavoritesProvider>
             <Header />
             <TelegramBar />
             <Breadcrumbs />
-            <main className="flex-1 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <main className="flex-1 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))]">
               {children}
             </main>
             <Footer />

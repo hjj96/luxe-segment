@@ -1,5 +1,6 @@
 import type { Product, Category, HomeVideo } from "./types";
 import { GENERATED_PRODUCTS } from "./products.generated";
+import { optimizeCloudinaryDeliveryUrl } from "./cloudinary";
 
 export const TELEGRAM_CHANNEL = "https://t.me/luxe_segment";
 export const TELEGRAM_CHAT = "https://t.me/luxesegment";
@@ -19,14 +20,22 @@ export const COLORS = ["Чёрный", "Белый", "Серый", "Бежевы
 export const MOCK_PRODUCTS: Product[] = GENERATED_PRODUCTS;
 
 // Placeholder images (use real URLs or /public/img in production)
-export function getProductImageUrl(product: Product, index = 0): string {
+/** `maxWidth` — для Cloudinary: легче файл, быстрее загрузка (каталог ~640, карточка ~1000). */
+export function getProductImageUrl(product: Product, index = 0, maxWidth?: number): string {
   if (product.images.length === 0) {
     return `https://placehold.co/600x800/f5f5f7/86868b?text=${encodeURIComponent(product.name)}`;
   }
   const img = product.images[index] || product.images[0];
-  // Ссылка (https) или локальный путь (/img/...) — используем как есть
-  if (img && (img.startsWith("http") || img.startsWith("/"))) return img;
-  return `https://placehold.co/600x800/f5f5f7/86868b?text=${encodeURIComponent(product.name)}`;
+  let out: string;
+  if (img && (img.startsWith("http") || img.startsWith("/"))) {
+    out = img;
+  } else {
+    out = `https://placehold.co/600x800/f5f5f7/86868b?text=${encodeURIComponent(product.name)}`;
+  }
+  if (maxWidth && out.startsWith("http")) {
+    out = optimizeCloudinaryDeliveryUrl(out, maxWidth);
+  }
+  return out;
 }
 
 // Homepage videos — managed via config (could be admin later)
