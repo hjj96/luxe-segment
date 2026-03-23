@@ -38,7 +38,7 @@ export function Breadcrumbs() {
   if (pathname.startsWith("/product/")) {
     return (
       <nav
-        className="border-b border-luxe-border/70 bg-gradient-to-b from-[#fafaf9] to-luxe-bg-alt py-3.5 transition-colors"
+        className="border-b border-luxe-border bg-luxe-bg-alt py-3.5"
         aria-label="Хлебные крошки"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -72,7 +72,7 @@ export function Breadcrumbs() {
 
   return (
     <nav
-      className="border-b border-luxe-border/70 bg-gradient-to-b from-[#fafaf9] to-luxe-bg-alt py-3.5"
+      className="border-b border-luxe-border bg-luxe-bg-alt py-3.5"
       aria-label="Хлебные крошки"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">

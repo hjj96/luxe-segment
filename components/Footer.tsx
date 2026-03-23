@@ -3,24 +3,19 @@ import { TELEGRAM_CHANNEL } from "@/lib/data";
 
 export function Footer() {
   return (
-    <footer className="bg-[#0a0a0a] text-white">
-      {/* Плавный переход от светлого main к тёмному подвалу */}
-      <div
-        className="h-8 bg-gradient-to-b from-luxe-bg via-[#e8e6e4]/40 to-[#0a0a0a] sm:h-10"
-        aria-hidden
-      />
-      <div className="mx-auto max-w-6xl px-4 pb-12 pt-2 sm:px-6 sm:pb-16 sm:pt-0">
+    <footer className="border-t border-luxe-border bg-[#0a0a0a] text-white">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="text-center">
           <div className="space-y-4">
             <p className="text-lg tracking-[0.15em] font-light">LS</p>
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-white/70">
-              <Link href="/catalog" className="hover:text-white transition-colors">Каталог</Link>
-              <Link href="/delivery" className="hover:text-white transition-colors">Доставка и Оплата</Link>
+              <Link href="/catalog" className="transition-colors duration-200 hover:text-white">Каталог</Link>
+              <Link href="/delivery" className="transition-colors duration-200 hover:text-white">Доставка и Оплата</Link>
               <a
                 href={TELEGRAM_CHANNEL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition-colors"
+                className="transition-colors duration-200 hover:text-white"
               >
                 Telegram Канал
               </a>

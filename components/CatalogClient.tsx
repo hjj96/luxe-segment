@@ -343,7 +343,7 @@ function FilterForm({
         </div>
       </div>
 
-      <div className="sticky bottom-0 -mx-4 mt-2 grid grid-cols-2 gap-2 rounded-t-xl border-t border-luxe-border bg-white px-4 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.06)]">
+      <div className="sticky bottom-0 -mx-4 mt-2 grid grid-cols-2 gap-2 rounded-t-xl border-t border-luxe-border bg-white px-4 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <button
           type="button"
           onClick={onReset}

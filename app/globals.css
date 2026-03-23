@@ -32,7 +32,7 @@ body {
   @apply fixed inset-0 z-40 bg-black/20;
 }
 .bottom-sheet-panel {
-  @apply fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-auto rounded-t-2xl bg-white shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.12)];
+  @apply fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-auto rounded-t-2xl border-t border-luxe-border bg-white;
 }
 
 /* Единый стиль заголовков секций */

@@ -63,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
           e.preventDefault();
           toggleFavorite(product.id);
         }}
-        className="absolute right-4 top-4 z-10 flex items-center justify-center p-1.5 text-white/90 transition-all duration-300 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+        className="absolute right-4 top-4 z-10 flex items-center justify-center p-1.5 text-white/90 drop-shadow-sm transition-all duration-200 hover:scale-105 hover:text-white"
         aria-label={fav ? "Убрать из избранного" : "В избранное"}
       >
         <IconHeart size="sm" filled={fav} className={fav ? "text-white" : "text-white/80"} />

@@ -55,7 +55,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-black text-white shadow-[0_4px_24px_-8px_rgba(0,0,0,0.35)] safe-area-padding">
+    <header className="sticky top-0 z-30 border-b border-white/10 bg-black text-white safe-area-padding">
       <div className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
         <div className="flex w-[88px] items-center justify-start gap-1">
           <button

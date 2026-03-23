@@ -198,7 +198,7 @@ export function ProductClient({ product }: { product: Product }) {
       </div>
 
       {/* Мобильная фиксированная панель — всегда видна внизу экрана */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 rounded-t-xl border-t border-luxe-border/80 bg-white/95 p-4 shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.08)] backdrop-blur-sm pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 rounded-t-xl border-t border-luxe-border bg-white p-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden">
         {actionButtons}
       </div>
     </div>
