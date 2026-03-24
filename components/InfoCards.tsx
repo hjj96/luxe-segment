@@ -8,28 +8,22 @@ const CARDS = [
 
 export function InfoCards() {
   return (
-    <section className="border-t border-luxe-border bg-white py-12 sm:py-16">
+    <section className="border-t border-luxe-border/90 bg-luxe-surface py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid gap-12 sm:grid-cols-3 sm:gap-8">
           {CARDS.map(({ href, title, short }, idx) => (
             <Link
               key={href}
               href={href}
-              className="group relative block text-center pb-6 border-b border-luxe-border hover:border-luxe-ink transition-colors"
+              className="group relative block border-b border-luxe-border/80 pb-8 text-center transition-colors duration-300 hover:border-luxe-accent/25 sm:border-b-0 sm:pb-0 sm:pt-2"
             >
-              <div className="mb-4 flex justify-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-sm border border-luxe-border transition-colors group-hover:border-luxe-ink">
-                  <span className="text-xs uppercase tracking-label text-luxe-mute group-hover:text-luxe-ink">
-                    {idx + 1}
-                  </span>
+              <div className="mb-5 flex justify-center sm:mb-6">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-luxe-border/90 transition-all duration-300 group-hover:border-luxe-accent/35 group-hover:bg-luxe-accent-faint">
+                  <span className="font-editorial text-sm text-luxe-mute transition-colors group-hover:text-luxe-ink">{idx + 1}</span>
                 </div>
               </div>
-              <h3 className="text-xs uppercase tracking-label text-luxe-ink">
-                {title}
-              </h3>
-              <p className="mt-2 text-sm text-luxe-mute group-hover:text-luxe-ink transition-colors">
-                {short}
-              </p>
+              <h3 className="text-[10px] uppercase tracking-[0.2em] text-luxe-ink">{title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-luxe-mute transition-colors duration-300 group-hover:text-luxe-ink-soft">{short}</p>
             </Link>
           ))}
         </div>

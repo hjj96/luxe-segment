@@ -96,7 +96,7 @@ export const GENERATED_PRODUCTS: Product[] = [
     specs: [],
     inStock: false,
     madeToOrder: true,
-    colors: ["голбой"],
+    colors: ["голубой"],
     sizes: ["S", "M", "L"],
     createdAt: "2026-03-16T00:00:00.000Z",
   },

@@ -1,24 +1,35 @@
-// Иконки для сайта LS
+// Иконки LS — тонкие штриховые там, где уместно премиальное ощущение
 const sizeClass = (s?: "sm" | "md" | "lg") => {
   switch (s) {
-    case "sm": return "w-4 h-4";
-    case "lg": return "w-6 h-6";
-    default: return "w-5 h-5";
+    case "sm":
+      return "w-4 h-4";
+    case "lg":
+      return "w-6 h-6";
+    default:
+      return "w-[1.125rem] h-[1.125rem]";
   }
 };
 
-// Кнопка вызова бокового меню (4 квадрата)
+/** Премиальное меню — три линии, stroke */
 export function IconMenu({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 56 56" aria-hidden>
-      <path d="M 34.4335 26.0664 L 45.0976 26.0664 C 48.0976 26.0664 49.5743 24.5664 49.5743 21.4727 L 49.5743 10.9961 C 49.5743 7.9023 48.0976 6.4258 45.0976 6.4258 L 34.4335 6.4258 C 31.4570 6.4258 29.9570 7.9023 29.9570 10.9961 L 29.9570 21.4727 C 29.9570 24.5664 31.4570 26.0664 34.4335 26.0664 Z M 10.9023 26.0664 L 21.5898 26.0664 C 24.5663 26.0664 26.0663 24.5664 26.0663 21.4727 L 26.0663 10.9961 C 26.0663 7.9023 24.5663 6.4258 21.5898 6.4258 L 10.9023 6.4258 C 7.9257 6.4258 6.4257 7.9023 6.4257 10.9961 L 6.4257 21.4727 C 6.4257 24.5664 7.9257 26.0664 10.9023 26.0664 Z M 10.9023 49.5742 L 21.5898 49.5742 C 24.5663 49.5742 26.0663 48.0977 26.0663 45.0039 L 26.0663 34.5039 C 26.0663 31.4336 24.5663 29.9336 21.5898 29.9336 L 10.9023 29.9336 C 7.9257 29.9336 6.4257 31.4336 6.4257 34.5039 L 6.4257 45.0039 C 6.4257 48.0977 7.9257 49.5742 10.9023 49.5742 Z M 34.4335 49.5742 L 45.0976 49.5742 C 48.0976 49.5742 49.5743 48.0977 49.5743 45.0039 L 49.5743 34.5039 C 49.5743 31.4336 48.0976 29.9336 45.0976 29.9336 L 34.4335 29.9336 C 31.4570 29.9336 29.9570 31.4336 29.9570 34.5039 L 29.9570 45.0039 C 29.9570 48.0977 31.4570 49.5742 34.4335 49.5742 Z" />
+    <svg
+      className={`${sizeClass(size)} ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.35}
+      strokeLinecap="round"
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <path d="M4 7h16M4 12h16M4 17h16" />
     </svg>
   );
 }
 
 export function IconX({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
   );
@@ -26,7 +37,7 @@ export function IconX({ className = "", size }: { className?: string; size?: "sm
 
 export function IconHome({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
     </svg>
   );
@@ -34,15 +45,15 @@ export function IconHome({ className = "", size }: { className?: string; size?: 
 
 export function IconGrid({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
     </svg>
   );
 }
 
-// Лайк (избранное) — заливка для filled, контур для outline
 export function IconHeart({ className = "", size, filled }: { className?: string; size?: "sm" | "md" | "lg"; filled?: boolean }) {
-  const path = "M16.2857 3C14.5714 3 13.0476 3.75978 12 4.99441C10.9524 3.75978 9.33333 3 7.61905 3C4.57143 3 2 5.56425 2 8.60335C2 8.7933 2 8.98324 2 9.17318C2.38095 13.8268 7.33333 17.7207 10.2857 19.5251C10.7619 19.8101 11.3333 20 12 20C12.5714 20 13.1429 19.8101 13.7143 19.5251C16.6667 17.6257 21.619 13.8268 22 9.17318C22 8.98324 22 8.7933 22 8.60335C22 5.56425 19.4286 3 16.2857 3Z";
+  const path =
+    "M16.2857 3C14.5714 3 13.0476 3.75978 12 4.99441C10.9524 3.75978 9.33333 3 7.61905 3C4.57143 3 2 5.56425 2 8.60335C2 8.7933 2 8.98324 2 9.17318C2.38095 13.8268 7.33333 17.7207 10.2857 19.5251C10.7619 19.8101 11.3333 20 12 20C12.5714 20 13.1429 19.8101 13.7143 19.5251C16.6667 17.6257 21.619 13.8268 22 9.17318C22 8.98324 22 8.7933 22 8.60335C22 5.56425 19.4286 3 16.2857 3Z";
   if (filled) {
     return (
       <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -51,31 +62,28 @@ export function IconHeart({ className = "", size, filled }: { className?: string
     );
   }
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M16.2857 3C14.5714 3 13.0476 3.75978 12 4.99441C10.9524 3.75978 9.33333 3 7.61905 3C4.57143 3 2 5.56425 2 8.60335C2 8.7933 2 8.98324 2 9.17318C2.38095 13.8268 7.33333 17.7207 10.2857 19.5251C10.7619 19.8101 11.3333 20 12 20C12.5714 20 13.1429 19.8101 13.7143 19.5251C16.6667 17.6257 21.619 13.8268 22 9.17318C22 8.98324 22 8.7933 22 8.60335C22 5.56425 19.4286 3 16.2857 3Z" />
     </svg>
   );
 }
 
-// Корзина
 export function IconCart({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 16 16" aria-hidden>
-      <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4z" />
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.25} viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
     </svg>
   );
 }
 
-// Аккаунт
 export function IconUser({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 16 16" aria-hidden>
-      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
     </svg>
   );
 }
 
-// Телеграм
 export function IconTelegram({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
     <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -84,16 +92,14 @@ export function IconTelegram({ className = "", size }: { className?: string; siz
   );
 }
 
-// Поиск
 export function IconSearch({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path d="M21.1592 18.0701L17.7962 14.7027C18.3057 13.5803 18.6115 12.4578 18.6115 11.2333C18.6115 8.98843 17.7962 6.94761 16.1656 5.417C12.9045 2.15169 7.70701 2.15169 4.44586 5.417C1.18471 8.6823 1.18471 13.8864 4.44586 17.1517C5.97452 18.6823 8.11465 19.6007 10.2548 19.6007C11.4777 19.6007 12.7006 19.2945 13.7197 18.7843L17.0828 22.1517C17.5924 22.6619 18.4076 22.968 19.121 22.968C19.8344 22.968 20.5478 22.6619 21.1592 22.1517C22.2803 20.9272 22.2803 19.0905 21.1592 18.0701ZM5.87261 15.519C3.42675 13.0701 3.42675 9.09047 5.87261 6.74353C7.09554 5.51904 8.6242 4.90679 10.2548 4.90679C11.8854 4.90679 13.414 5.51904 14.6369 6.74353C15.8599 7.96802 16.4713 9.49863 16.4713 11.1313C16.4713 12.7639 15.8599 14.3966 14.6369 15.519C13.414 16.6415 11.8854 17.3558 10.2548 17.3558C8.6242 17.3558 6.99363 16.7435 5.87261 15.519Z" />
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
     </svg>
   );
 }
 
-// Удалить
 export function IconTrash({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
     <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 16 16" aria-hidden>
@@ -102,7 +108,6 @@ export function IconTrash({ className = "", size }: { className?: string; size?:
   );
 }
 
-// Доставка
 export function IconTruck({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
     <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -112,7 +117,6 @@ export function IconTruck({ className = "", size }: { className?: string; size?:
   );
 }
 
-// Оплата
 export function IconCreditCard({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
     <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -121,7 +125,6 @@ export function IconCreditCard({ className = "", size }: { className?: string; s
   );
 }
 
-// Гарантия
 export function IconShield({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
     <svg className={`${sizeClass(size)} ${className}`} fill="currentColor" viewBox="0 0 256 256" aria-hidden>
@@ -132,7 +135,7 @@ export function IconShield({ className = "", size }: { className?: string; size?
 
 export function IconChevronRight({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
     </svg>
   );
@@ -140,7 +143,7 @@ export function IconChevronRight({ className = "", size }: { className?: string;
 
 export function IconFilter({ className = "", size }: { className?: string; size?: "sm" | "md" | "lg" }) {
   return (
-    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+    <svg className={`${sizeClass(size)} ${className}`} fill="none" stroke="currentColor" strokeWidth={1.35} viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h10M4 17h16M14 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4M4 12h12M12 20h8" />
     </svg>
   );

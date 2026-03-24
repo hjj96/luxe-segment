@@ -297,7 +297,7 @@ export default function AccountPage() {
           <button
             type="submit"
             disabled={loadingAction}
-            className="mt-6 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="luxe-btn-primary mt-6 w-full py-3.5 text-xs uppercase tracking-label disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loadingAction ? "Отправка..." : "Получить код"}
           </button>
@@ -324,7 +324,7 @@ export default function AccountPage() {
           <button
             type="submit"
             disabled={loadingAction || code.length < 4}
-            className="mt-6 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="luxe-btn-primary mt-6 w-full py-3.5 text-xs uppercase tracking-label disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loadingAction ? "Проверка..." : "Войти"}
           </button>
@@ -394,7 +394,7 @@ export default function AccountPage() {
           <button
             type="submit"
             disabled={pwLoading}
-            className="mt-2 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="luxe-btn-primary mt-2 w-full py-3.5 text-xs uppercase tracking-label disabled:cursor-not-allowed disabled:opacity-50"
           >
             {pwLoading
               ? "Отправка..."

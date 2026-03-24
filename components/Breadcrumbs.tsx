@@ -34,23 +34,19 @@ export function Breadcrumbs() {
   const show = pathname === "/catalog" || pathname.startsWith("/product/");
   if (!show) return null;
 
-  /* Страница товара: Главная → Каталог → Товар (без англ. «Product») */
   if (pathname.startsWith("/product/")) {
     return (
-      <nav
-        className="border-b border-luxe-border bg-luxe-bg-alt py-3.5"
-        aria-label="Хлебные крошки"
-      >
+      <nav className="border-b border-luxe-border/90 bg-luxe-bg-alt/50 py-4" aria-label="Хлебные крошки">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-luxe-mute">
-            <Link href="/" className="hover:text-luxe-ink transition-colors duration-200">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tracking-[0.04em] text-luxe-mute">
+            <Link href="/" className="transition-colors duration-300 hover:text-luxe-ink">
               Главная
             </Link>
-            <span className="text-luxe-border/90">/</span>
-            <Link href="/catalog" className="hover:text-luxe-ink transition-colors duration-200">
+            <span className="text-luxe-border-strong/80">/</span>
+            <Link href="/catalog" className="transition-colors duration-300 hover:text-luxe-ink">
               Каталог
             </Link>
-            <span className="text-luxe-border/90">/</span>
+            <span className="text-luxe-border-strong/80">/</span>
             <span className="text-luxe-ink">Товар</span>
           </div>
         </div>
@@ -71,19 +67,16 @@ export function Breadcrumbs() {
   ];
 
   return (
-    <nav
-      className="border-b border-luxe-border bg-luxe-bg-alt py-3.5"
-      aria-label="Хлебные крошки"
-    >
+    <nav className="border-b border-luxe-border/90 bg-luxe-bg-alt/50 py-4" aria-label="Хлебные крошки">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-luxe-mute">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tracking-[0.04em] text-luxe-mute">
           {breadcrumbs.map((crumb, idx) => (
             <span key={crumb.href} className="flex items-center gap-2">
-              {idx > 0 && <span className="text-luxe-border/90">/</span>}
+              {idx > 0 && <span className="text-luxe-border-strong/80">/</span>}
               {idx === breadcrumbs.length - 1 ? (
                 <span className="text-luxe-ink">{crumb.label}</span>
               ) : (
-                <Link href={crumb.href} className="hover:text-luxe-ink transition-colors duration-200">
+                <Link href={crumb.href} className="transition-colors duration-300 hover:text-luxe-ink">
                   {crumb.label}
                 </Link>
               )}

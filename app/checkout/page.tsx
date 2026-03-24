@@ -63,7 +63,7 @@ export default function CheckoutPage() {
             href={TELEGRAM_CHANNEL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-sm bg-luxe-ink px-6 py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
+            className="luxe-btn-primary flex items-center justify-center gap-2 px-6 py-3.5 text-xs uppercase tracking-label"
           >
             <IconTelegram size="sm" />
             Канал Luxe Segment
@@ -241,7 +241,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="mt-8 w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+              className="luxe-btn-primary mt-8 w-full py-3.5 text-xs uppercase tracking-label disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? "Отправка..." : "Отправить заявку"}
             </button>
