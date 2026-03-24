@@ -3,19 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --bg: #f4f1eb;
-  --surface: #faf8f5;
-  --ink: #1c1b19;
-  --mute: #6e6962;
-  --border: #ddd6cc;
-  --accent: #8c7c6b;
-  --graphite: #131211;
+  --bg: #fdfdfc;
+  --ink: #0a0a0a;
+  --mute: #6b6b6b;
+  --border: #e8e6e4;
 }
 
 body {
-  @apply bg-luxe-bg text-luxe-ink;
+  @apply bg-luxe-bg text-luxe-ink antialiased;
   font-feature-settings: "rlig" 1, "calt" 1;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
 .safe-area-padding {
@@ -32,63 +29,16 @@ body {
 }
 
 .bottom-sheet-overlay {
-  @apply fixed inset-0 z-40 bg-luxe-graphite/25 backdrop-blur-[2px] transition-opacity duration-300 ease-luxe;
+  @apply fixed inset-0 z-40 bg-black/20;
 }
-
 .bottom-sheet-panel {
-  @apply fixed bottom-0 left-0 right-0 z-50 max-h-[88vh] overflow-auto rounded-t-sheet border-t border-luxe-border bg-luxe-surface shadow-luxe;
-  animation: sheet-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  @apply fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-auto rounded-t-2xl border-t border-luxe-border bg-white;
 }
 
-@keyframes sheet-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Editorial заголовки секций */
+/* Единый стиль заголовков секций */
 .section-title {
-  @apply font-editorial text-[1.65rem] sm:text-3xl font-normal tracking-editorial text-luxe-ink;
-  font-feature-settings: "kern" 1;
-}
-
-.section-title--sans {
-  @apply font-sans text-xs uppercase tracking-[0.2em] text-luxe-mute font-medium;
-}
-
-.section-label {
-  @apply text-[10px] uppercase tracking-[0.22em] text-luxe-mute;
-}
-
-/* Тихий fade-in для карточек (задержка через inline style) */
-.luxe-card-enter {
-  opacity: 0;
-  animation: luxe-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes luxe-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Tap / focus — премиальный feedback */
-.luxe-tap {
-  @apply transition-transform duration-200 ease-out active:scale-[0.98];
-}
-
-.luxe-focus-ring:focus-visible {
-  @apply outline-none ring-1 ring-luxe-accent/50 ring-offset-2 ring-offset-luxe-bg;
+  @apply text-xl uppercase text-luxe-ink sm:text-2xl tracking-[0.05em];
+  font-weight: 500;
 }
 
 .no-spinner::-webkit-outer-spin-button,
@@ -101,6 +51,8 @@ body {
   -moz-appearance: textfield;
 }
 
+/* Фокус по умолчанию — без глобальной «черты снизу», чтобы не ломать поля с рамкой.
+   Используйте .luxe-input / .luxe-textarea / .luxe-select */
 input:focus,
 input:focus-visible,
 textarea:focus,
@@ -116,86 +68,69 @@ select:focus-visible {
   margin: 0;
   appearance: none;
   -webkit-appearance: none;
-  border: 1px solid var(--ink);
+  border: 1px solid #0a0a0a;
   border-radius: 9999px;
-  background: var(--surface);
+  background: #fff;
   display: inline-grid;
   place-content: center;
   cursor: pointer;
-  transition: background-color 160ms ease, border-color 160ms ease;
+  transition: background-color 120ms ease-in-out;
 }
 
 .radio-minimal:checked {
-  background: var(--ink);
-  border-color: var(--ink);
+  background: #0a0a0a;
 }
 
 .select-rect {
-  border-radius: 0.125rem;
+  border-radius: 0.125rem; /* rounded-sm — единый стиль с кнопками */
   appearance: none;
   -webkit-appearance: none;
   background-image: none;
 }
 
+/* Поля ввода: скругление + рамка (как кнопки) */
 @layer components {
   .luxe-input {
-    @apply w-full rounded-sm border border-luxe-border bg-luxe-surface px-3 py-2.5 text-sm text-luxe-ink transition-[border-color,box-shadow] duration-300 ease-luxe;
+    @apply w-full rounded-sm border border-luxe-border bg-white px-3 py-2.5 text-sm text-luxe-ink transition-[border-color,box-shadow];
   }
   .luxe-input::placeholder {
-    @apply text-luxe-mute/60;
+    @apply text-luxe-mute/55;
   }
   .luxe-input:focus {
-    border-color: rgba(140, 124, 107, 0.45);
-    box-shadow: 0 0 0 1px rgba(140, 124, 107, 0.12);
+    border-color: #0a0a0a;
+    box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.08);
   }
   .luxe-input:disabled {
-    @apply cursor-not-allowed bg-luxe-bg-alt/80 opacity-70;
+    @apply cursor-not-allowed bg-luxe-bg-alt opacity-70;
   }
 
   .luxe-textarea {
-    @apply min-h-[5.5rem] w-full resize-y rounded-sm border border-luxe-border bg-luxe-surface px-3 py-3 text-sm leading-relaxed text-luxe-ink transition-[border-color,box-shadow] duration-300 ease-luxe;
+    @apply min-h-[5.5rem] w-full resize-y rounded-sm border border-luxe-border bg-white px-3 py-3 text-sm leading-relaxed text-luxe-ink transition-[border-color,box-shadow];
   }
   .luxe-textarea::placeholder {
-    @apply text-luxe-mute/60;
+    @apply text-luxe-mute/55;
   }
   .luxe-textarea:focus {
-    border-color: rgba(140, 124, 107, 0.45);
-    box-shadow: 0 0 0 1px rgba(140, 124, 107, 0.12);
+    border-color: #0a0a0a;
+    box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.08);
   }
   .luxe-textarea:disabled {
-    @apply cursor-not-allowed bg-luxe-bg-alt/80 opacity-70;
+    @apply cursor-not-allowed bg-luxe-bg-alt opacity-70;
   }
 
   .luxe-select {
-    @apply w-full cursor-pointer rounded-sm border border-luxe-border bg-luxe-surface px-3 py-2.5 text-sm text-luxe-ink transition-[border-color,box-shadow] duration-300 ease-luxe;
+    @apply w-full cursor-pointer rounded-sm border border-luxe-border bg-white px-3 py-2.5 text-sm text-luxe-ink transition-[border-color,box-shadow];
   }
   .luxe-select:focus {
-    border-color: rgba(140, 124, 107, 0.45);
-    box-shadow: 0 0 0 1px rgba(140, 124, 107, 0.12);
+    border-color: #0a0a0a;
+    box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.08);
   }
   .luxe-select:disabled {
-    @apply cursor-not-allowed bg-luxe-bg-alt/80 opacity-70;
-  }
-
-  .luxe-btn-primary {
-    @apply rounded-sm bg-luxe-graphite py-3.5 text-xs uppercase tracking-[0.14em] text-luxe-surface transition-[opacity,transform,box-shadow] duration-300 ease-luxe;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
-  }
-  .luxe-btn-primary:hover {
-    @apply opacity-[0.98];
-  }
-  .luxe-btn-primary:active {
-    @apply scale-[0.99];
-  }
-
-  .luxe-btn-ghost {
-    @apply rounded-sm border border-luxe-border bg-transparent py-3.5 text-xs uppercase tracking-[0.1em] text-luxe-ink transition-colors duration-300 ease-luxe;
-  }
-  .luxe-btn-ghost:hover {
-    @apply border-luxe-accent/35 bg-luxe-accent-faint;
+    @apply cursor-not-allowed bg-luxe-bg-alt opacity-70;
   }
 }
 
+/* Единое скругление для интерактивных блоков (дублирует rounded-sm из Tailwind) */
 .luxe-round {
   border-radius: 0.125rem;
 }

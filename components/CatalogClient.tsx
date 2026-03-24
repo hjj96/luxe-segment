@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { FilterSheet } from "@/components/FilterSheet";
 import { CATEGORIES } from "@/lib/data";
-import { formatColorLabel } from "@/lib/colorLabels";
 import type { Product, Category } from "@/lib/types";
 type SortValue = "newest" | "price_asc" | "price_desc";
 
@@ -73,6 +72,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
     });
   }, [products, search, category, brand, color, size, minPrice, maxPrice, availability, sort]);
 
+  // Динамические списки фильтров на основе текущих товаров
   const { brands, colors, sizes } = useMemo(() => {
     const brandSet = new Set<string>();
     const colorSet = new Set<string>();
@@ -115,41 +115,36 @@ export function CatalogClient({ products }: { products: Product[] }) {
     });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-18">
-      <div className="mb-12 flex flex-col items-center sm:mb-16">
-        <p className="section-label mb-4">Коллекция</p>
-        <div className="flex w-full max-w-2xl items-center gap-5">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-luxe-border" />
-          <h1 className="font-editorial text-center text-[1.85rem] font-normal tracking-editorial text-luxe-ink sm:text-3xl">
-            Каталог
-          </h1>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-luxe-border" />
-        </div>
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+      <div className="mb-8 flex items-center gap-4 sm:mb-10">
+        <div className="h-px flex-1 bg-luxe-border" />
+        <h1 className="section-title whitespace-nowrap">Каталог</h1>
+        <div className="h-px flex-1 bg-luxe-border" />
       </div>
 
-      <div className="mb-8 flex flex-wrap items-center justify-end gap-3 sm:mb-10">
+      <div className="mb-6 flex items-center justify-end gap-2">
         <button
           type="button"
           onClick={() => setFilterOpen(true)}
-          className="rounded-sm border border-luxe-border bg-luxe-surface px-4 py-2.5 text-[10px] uppercase tracking-[0.16em] text-luxe-ink transition-all duration-300 hover:border-luxe-accent/30 hover:bg-luxe-bg-alt md:hidden"
+          className="rounded-sm border border-luxe-border px-3 py-2 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt md:hidden"
         >
-          Фильтры{activeFiltersCount > 0 ? ` · ${activeFiltersCount}` : ""}
+          Фильтры{activeFiltersCount > 0 ? ` (${activeFiltersCount})` : ""}
         </button>
-        <label className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.14em] text-luxe-mute">
+        <label className="flex items-center gap-2 text-xs uppercase tracking-label text-luxe-mute">
           <span className="hidden sm:inline">Сортировка</span>
           <select
             value={sort}
             onChange={(e) => applyParams({ sort: e.target.value })}
-            className="select-rect luxe-select min-w-[11rem] text-[10px] uppercase tracking-[0.12em] text-luxe-ink"
+            className="select-rect luxe-select text-xs uppercase tracking-label text-luxe-ink"
           >
             <option value="newest">По новизне</option>
-            <option value="price_asc">Цена ↑</option>
-            <option value="price_desc">Цена ↓</option>
+            <option value="price_asc">Цена: по возрастанию</option>
+            <option value="price_desc">Цена: по убыванию</option>
           </select>
         </label>
       </div>
 
-      <div className="flex gap-10 lg:gap-14">
+      <div className="flex gap-8">
         <aside className="hidden w-64 shrink-0 md:block">
           <FilterForm
             category={category}
@@ -167,13 +162,13 @@ export function CatalogClient({ products }: { products: Product[] }) {
           />
         </aside>
         <div className="min-w-0 flex-1">
-          <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-4">
-            {filtered.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3 lg:grid-cols-4">
+            {filtered.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
           {filtered.length === 0 && (
-            <p className="py-16 text-center text-sm text-luxe-mute">По выбранным параметрам ничего не найдено.</p>
+            <p className="py-12 text-center text-luxe-mute">По выбранным фильтрам ничего не найдено.</p>
           )}
         </div>
       </div>
@@ -259,20 +254,14 @@ function FilterForm({
   };
 
   const pillClass = (active: boolean) =>
-    `rounded-full border px-3.5 py-2 text-[13px] font-normal tracking-tight transition-all duration-300 ease-luxe ${
-      active
-        ? "border-luxe-accent/45 bg-luxe-accent-faint text-luxe-ink shadow-sm ring-1 ring-luxe-accent/10"
-        : "border-luxe-border/90 bg-luxe-surface text-luxe-ink hover:border-luxe-accent/25"
-    }`;
+    `rounded-sm border px-3 py-1.5 text-sm transition-colors ${active ? "border-luxe-ink bg-luxe-ink text-white" : "border-luxe-border bg-luxe-bg text-luxe-ink hover:border-luxe-ink/40"}`;
 
   return (
-    <div className="space-y-9 pb-4">
+    <div className="space-y-6">
       <div>
-        <p className="section-label mb-3">Категория</p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Категория</p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => setDraftCategory("")} className={pillClass(!draftCategory)}>
-            Все
-          </button>
+          <button type="button" onClick={() => setDraftCategory("")} className={pillClass(!draftCategory)}>Все</button>
           {CATEGORIES.map((c: Category) => (
             <button key={c.slug} type="button" onClick={() => setDraftCategory(c.slug)} className={pillClass(draftCategory === c.slug)}>
               {c.name}
@@ -282,9 +271,13 @@ function FilterForm({
       </div>
 
       <div>
-        <p className="section-label mb-3">Бренд</p>
-        <select value={draftBrand} onChange={(e) => setDraftBrand(e.target.value)} className="select-rect luxe-select">
-          <option value="">Все бренды</option>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Бренд</p>
+        <select
+          value={draftBrand}
+          onChange={(e) => setDraftBrand(e.target.value)}
+          className="select-rect luxe-select"
+        >
+          <option value="">Все</option>
           {brands.map((b) => (
             <option key={b} value={b}>
               {b}
@@ -294,8 +287,8 @@ function FilterForm({
       </div>
 
       <div>
-        <p className="section-label mb-3">Цена</p>
-        <div className="flex gap-3">
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Цена</p>
+        <div className="flex gap-2">
           <input
             type="number"
             placeholder="От"
@@ -314,25 +307,21 @@ function FilterForm({
       </div>
 
       <div>
-        <p className="section-label mb-3">Цвет</p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Цвет</p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => setDraftColor("")} className={pillClass(!draftColor)}>
-            Все
-          </button>
+          <button type="button" onClick={() => setDraftColor("")} className={pillClass(!draftColor)}>Все</button>
           {colors.map((c) => (
             <button key={c} type="button" onClick={() => setDraftColor(c)} className={pillClass(draftColor === c)}>
-              {formatColorLabel(c)}
+              {c}
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <p className="section-label mb-3">Размер</p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Размер</p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => setDraftSize("")} className={pillClass(!draftSize)}>
-            Все
-          </button>
+          <button type="button" onClick={() => setDraftSize("")} className={pillClass(!draftSize)}>Все</button>
           {sizes.map((s) => (
             <button key={s} type="button" onClick={() => setDraftSize(s)} className={pillClass(draftSize === s)}>
               {s}
@@ -342,33 +331,31 @@ function FilterForm({
       </div>
 
       <div>
-        <p className="section-label mb-3">Наличие</p>
+        <p className="mb-2 text-xs uppercase tracking-label text-luxe-mute">Наличие</p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => setDraftAvailability("")} className={pillClass(!draftAvailability)}>
-            Все
-          </button>
+          <button type="button" onClick={() => setDraftAvailability("")} className={pillClass(!draftAvailability)}>Все</button>
           <button type="button" onClick={() => setDraftAvailability("in_stock")} className={pillClass(draftAvailability === "in_stock")}>
             В наличии
           </button>
-          <button
-            type="button"
-            onClick={() => setDraftAvailability("made_to_order")}
-            className={pillClass(draftAvailability === "made_to_order")}
-          >
+          <button type="button" onClick={() => setDraftAvailability("made_to_order")} className={pillClass(draftAvailability === "made_to_order")}>
             Под заказ
           </button>
         </div>
       </div>
 
-      <div className="sticky bottom-0 -mx-4 mt-4 grid grid-cols-2 gap-3 rounded-t-sheet border-t border-luxe-border/90 bg-luxe-surface/95 px-4 pt-5 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_32px_-8px_rgba(28,27,25,0.06)] backdrop-blur-sm supports-[backdrop-filter]:bg-luxe-surface/85">
+      <div className="sticky bottom-0 -mx-4 mt-2 grid grid-cols-2 gap-2 rounded-t-xl border-t border-luxe-border bg-white px-4 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <button
           type="button"
           onClick={onReset}
-          className="rounded-sm border border-luxe-border py-3.5 text-[10px] uppercase tracking-[0.16em] text-luxe-mute transition-colors duration-300 hover:border-luxe-mute/40 hover:text-luxe-ink"
+          className="w-full rounded-sm border border-luxe-border py-3 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
         >
           Сбросить
         </button>
-        <button type="button" onClick={apply} className="luxe-btn-primary rounded-sm py-3.5 text-[10px] tracking-[0.16em]">
+        <button
+          type="button"
+          onClick={apply}
+          className="w-full rounded-sm bg-luxe-ink py-3 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
+        >
           Применить
         </button>
       </div>

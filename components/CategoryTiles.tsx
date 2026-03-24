@@ -17,7 +17,7 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
             <div key={c.slug} className="flex items-center gap-12">
               <Link
                 href={c.href}
-                className="relative text-base font-medium uppercase tracking-label text-luxe-ink hover:opacity-70 transition-opacity after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-luxe-graphite hover:after:w-full after:transition-all"
+                className="relative text-base font-medium uppercase tracking-label text-luxe-ink hover:opacity-70 transition-opacity after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-luxe-ink hover:after:w-full after:transition-all"
               >
                 {c.name}
               </Link>

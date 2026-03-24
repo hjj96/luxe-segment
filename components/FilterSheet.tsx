@@ -23,25 +23,24 @@ export function FilterSheet({
 
   return (
     <>
-      <div className="bottom-sheet-overlay animate-luxe-fade" onClick={onClose} aria-hidden="true" />
-      <div className="bottom-sheet-panel flex max-h-[88vh] flex-col" role="dialog" aria-modal="true" aria-labelledby="filter-sheet-title">
-        <div className="flex shrink-0 flex-col items-center border-b border-luxe-border/80 bg-luxe-surface pt-3 pb-2 safe-area-padding">
-          <div className="mb-3 h-1 w-10 rounded-full bg-luxe-border" aria-hidden />
-          <div className="flex w-full items-center justify-between px-4 pb-3">
-            <span id="filter-sheet-title" className="font-editorial text-xl tracking-editorial text-luxe-ink">
-              Фильтры
-            </span>
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full p-2.5 text-luxe-mute transition-colors duration-300 hover:bg-luxe-bg-alt hover:text-luxe-ink"
-              aria-label="Закрыть"
-            >
-              <IconX size="md" />
-            </button>
-          </div>
+      <div
+        className="bottom-sheet-overlay"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <div className="bottom-sheet-panel" role="dialog" aria-modal="true">
+        <div className="sticky top-0 flex items-center justify-between border-b border-luxe-border bg-white px-4 py-4 safe-area-padding">
+          <span className="text-xs uppercase tracking-label text-luxe-ink">Фильтры</span>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-sm p-2 text-luxe-mute transition-colors hover:bg-luxe-bg-alt hover:text-luxe-ink"
+            aria-label="Закрыть"
+          >
+            <IconX size="md" />
+          </button>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-6 pt-2">{children}</div>
+        <div className="p-4 pb-20">{children}</div>
       </div>
     </>
   );

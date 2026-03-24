@@ -120,7 +120,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/checkout"
-              className="luxe-btn-primary mt-8 block w-full py-3.5 text-center text-xs uppercase tracking-label"
+              className="mt-8 block w-full rounded-sm bg-luxe-ink py-3.5 text-center text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
             >
               Оформить заказ
             </Link>

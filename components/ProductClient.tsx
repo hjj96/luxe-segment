@@ -4,16 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { useCartFavorites } from "@/components/CartFavoritesProvider";
 import { getProductImageUrl, TELEGRAM_CHAT } from "@/lib/data";
-import { formatColorLabel } from "@/lib/colorLabels";
-import { IconHeart, IconTelegram } from "./Icons";
+import { IconHeart, IconCart, IconTelegram } from "./Icons";
 import type { Product } from "@/lib/types";
-
-const chip = (active: boolean) =>
-  `rounded-full border px-3.5 py-2 text-[11px] uppercase tracking-[0.12em] transition-all duration-300 ease-luxe ${
-    active
-      ? "border-luxe-accent/45 bg-luxe-accent-faint text-luxe-ink ring-1 ring-luxe-accent/10"
-      : "border-luxe-border text-luxe-ink hover:border-luxe-accent/30"
-  }`;
 
 export function ProductClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, isFavorite } = useCartFavorites();
@@ -40,37 +32,37 @@ export function ProductClient({ product }: { product: Product }) {
 
   const actionButtons = (
     <>
-      <button type="button" onClick={handleAddToCart} className="luxe-btn-primary flex-1 min-w-0 py-3.5">
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        className="flex-1 min-w-0 rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-white transition-opacity hover:opacity-95 active:opacity-90"
+      >
         В корзину
       </button>
       <a
         href={TELEGRAM_CHAT}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-sm border border-luxe-border py-3.5 text-[10px] uppercase tracking-[0.12em] text-luxe-ink transition-colors duration-300 hover:border-luxe-accent/35 hover:bg-luxe-accent-faint"
+        className="flex flex-1 min-w-0 items-center justify-center gap-2 rounded-sm border border-luxe-ink py-3.5 text-xs uppercase tracking-[0.1em] text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
       >
-        <IconTelegram size="sm" className="shrink-0 text-luxe-accent" />
+        <IconTelegram size="sm" />
         <span className="truncate">Telegram</span>
       </a>
     </>
   );
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 pb-28 sm:px-6 sm:py-16 sm:pb-16">
-      <div className="mb-12 flex flex-col items-center sm:mb-16">
-        <p className="section-label mb-3">{product.brand}</p>
-        <div className="flex w-full max-w-3xl items-center gap-4">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-luxe-border" />
-          <h1 className="text-center font-editorial text-2xl font-normal leading-tight tracking-editorial text-luxe-ink sm:text-3xl">
-            {product.name}
-          </h1>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-luxe-border" />
-        </div>
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 pb-24 sm:pb-10">
+      <div className="mb-10 flex items-center gap-4 sm:mb-14">
+        <div className="h-px flex-1 bg-luxe-border" />
+        <h1 className="section-title whitespace-nowrap text-2xl sm:text-3xl">
+          {product.name}
+        </h1>
+        <div className="h-px flex-1 bg-luxe-border" />
       </div>
-
-      <div className="grid gap-12 md:grid-cols-2 md:gap-16">
+      <div className="grid gap-10 md:grid-cols-2 md:gap-14">
         <div className="space-y-4">
-          <div className="aspect-[3/4] overflow-hidden rounded-sm bg-luxe-bg-alt/70 shadow-luxe-sm ring-1 ring-luxe-border/80">
+          <div className="aspect-[3/4] overflow-hidden rounded-sm bg-luxe-bg-alt shadow-sm ring-1 ring-black/[0.04]">
             <Image
               src={imageUrl}
               alt={product.name}
@@ -89,8 +81,8 @@ export function ProductClient({ product }: { product: Product }) {
                   key={i}
                   type="button"
                   onClick={() => setCurrentImage(i)}
-                  className={`relative h-20 w-14 shrink-0 overflow-hidden rounded-sm border transition-all duration-300 ${
-                    currentImage === i ? "border-luxe-accent/50 ring-1 ring-luxe-accent/20" : "border-luxe-border hover:border-luxe-mute/40"
+                  className={`relative h-20 w-14 shrink-0 overflow-hidden rounded-sm border transition-colors ${
+                    currentImage === i ? "border-luxe-ink" : "border-luxe-border"
                   }`}
                 >
                   <Image
@@ -100,73 +92,104 @@ export function ProductClient({ product }: { product: Product }) {
                     height={80}
                     sizes="56px"
                     className="h-full w-full object-cover"
-                    unoptimized={getProductImageUrl(product, i, 200).startsWith("https://placehold")}
+                    unoptimized={getProductImageUrl(product, i, 200).startsWith(
+                      "https://placehold"
+                    )}
                   />
                 </button>
               ))}
             </div>
           )}
         </div>
-
-        <div className="md:sticky md:top-24 md:self-start">
-          <p className="mt-2 text-2xl font-medium tabular-nums tracking-tight text-luxe-ink">
+        <div className="md:sticky md:top-[4.5rem] md:self-start">
+          <p className="text-[11px] uppercase tracking-label text-luxe-mute">{product.brand}</p>
+          <p className="mt-6 text-lg text-luxe-ink">
             {product.price.toLocaleString("ru-RU")} {product.currency}
           </p>
           {product.description && (
-            <p className="mt-8 text-sm leading-relaxed text-luxe-mute">{product.description}</p>
+            <p className="mt-6 text-sm text-luxe-mute leading-relaxed">
+              {product.description}
+            </p>
           )}
-          <dl className="mt-10 space-y-3 border-t border-luxe-border/90 pt-8 text-sm">
+          <dl className="mt-8 space-y-2 border-t border-luxe-border pt-6 text-sm">
             {product.specs.map((s) => (
-              <div key={s.label} className="flex justify-between gap-6">
+              <div key={s.label} className="flex justify-between gap-4">
                 <dt className="text-luxe-mute">{s.label}</dt>
-                <dd className="text-right text-luxe-ink">{s.value}</dd>
+                <dd className="text-luxe-ink">{s.value}</dd>
               </div>
             ))}
           </dl>
           {product.colors.length > 0 && (
-            <div className="mt-10">
-              <p className="section-label mb-4">Цвет</p>
+            <div className="mt-8">
+              <p className="text-[11px] uppercase tracking-label text-luxe-mute mb-3">
+                Цвет
+              </p>
               <div className="flex flex-wrap gap-2">
                 {product.colors.map((c) => (
-                  <button key={c} type="button" onClick={() => setSelectedColor(c)} className={chip(selectedColor === c)}>
-                    {formatColorLabel(c)}
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => setSelectedColor(c)}
+                    className={`rounded-sm border px-3 py-1.5 text-xs uppercase tracking-label transition-colors ${
+                      selectedColor === c
+                        ? "border-luxe-ink bg-luxe-ink text-white"
+                        : "border-luxe-border text-luxe-ink hover:border-luxe-ink"
+                    }`}
+                  >
+                    {c}
                   </button>
                 ))}
               </div>
             </div>
           )}
           {product.sizes.length > 0 && (
-            <div className="mt-8">
-              <p className="section-label mb-4">Размер</p>
+            <div className="mt-6">
+              <p className="text-[11px] uppercase tracking-label text-luxe-mute mb-3">
+                Размер
+              </p>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((s) => (
-                  <button key={s} type="button" onClick={() => setSelectedSize(s)} className={chip(selectedSize === s)}>
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSelectedSize(s)}
+                    className={`rounded-sm border px-3 py-1.5 text-xs uppercase tracking-label transition-colors ${
+                      selectedSize === s
+                        ? "border-luxe-ink bg-luxe-ink text-white"
+                        : "border-luxe-border text-luxe-ink hover:border-luxe-ink"
+                    }`}
+                  >
                     {s}
                   </button>
                 ))}
               </div>
             </div>
           )}
-          <div className="mt-12 space-y-3">
+          <div className="mt-10 space-y-3">
             <button
               type="button"
               onClick={() => toggleFavorite(product.id)}
-              className="flex w-full items-center justify-center gap-2 rounded-sm border border-luxe-border py-3.5 text-[10px] uppercase tracking-[0.14em] text-luxe-ink transition-all duration-300 hover:border-luxe-graphite/25 hover:bg-luxe-bg-alt/80"
+              className="flex w-full items-center justify-center gap-2 rounded-sm border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
             >
-              <IconHeart size="sm" filled={fav} className={fav ? "text-luxe-accent" : "text-luxe-mute"} />
+              <IconHeart size="sm" filled={fav} className={fav ? "text-black" : ""} />
               {fav ? "В избранном" : "В избранное"}
             </button>
-            <div className="hidden flex-col gap-3 sm:flex">
-              <button type="button" onClick={handleAddToCart} className="luxe-btn-primary w-full py-3.5">
+            {/* Десктоп: блок в корзину + Telegram */}
+            <div className="hidden sm:flex sm:gap-3 sm:flex-col">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="w-full rounded-sm bg-luxe-ink py-3.5 text-xs uppercase tracking-label text-white transition-opacity hover:opacity-95"
+              >
                 В корзину
               </button>
               <a
                 href={TELEGRAM_CHAT}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-sm border border-luxe-border py-3.5 text-[10px] uppercase tracking-[0.12em] text-luxe-ink transition-colors duration-300 hover:border-luxe-accent/35 hover:bg-luxe-accent-faint"
+                className="flex w-full items-center justify-center gap-2 rounded-sm border border-luxe-ink py-3.5 text-xs uppercase tracking-label text-luxe-ink transition-colors hover:bg-luxe-bg-alt"
               >
-                <IconTelegram size="sm" className="text-luxe-accent" />
+                <IconTelegram size="sm" />
                 Консультация в Telegram
               </a>
             </div>
@@ -174,7 +197,8 @@ export function ProductClient({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 rounded-t-sheet border-t border-luxe-border/90 bg-luxe-surface/95 p-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] shadow-luxe backdrop-blur-md supports-[backdrop-filter]:bg-luxe-surface/90 sm:hidden">
+      {/* Мобильная фиксированная панель — всегда видна внизу экрана */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-3 rounded-t-xl border-t border-luxe-border bg-white p-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden">
         {actionButtons}
       </div>
     </div>
