@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -H 0.0.0.0",
+    "start": "NODE_ENV=production next start -H 0.0.0.0 -p ${PORT:-3000}",
     "lint": "next lint",
     "products": "node scripts/csv-to-products.cjs",
     "products:xlsx": "node scripts/prepare-products-xlsx.cjs"

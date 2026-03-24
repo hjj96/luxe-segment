@@ -14,6 +14,7 @@ meta:
 build:
   additionalCommands: npm run build
 
+# containerPort должен совпадать с портом процесса (см. PORT в package.json → start)
 run:
   command: npm run start
   containerPort: 3000
