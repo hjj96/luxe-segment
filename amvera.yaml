@@ -1,5 +1,9 @@
 # Amvera Cloud — Next.js (Node.js Server)
 # https://docs.amvera.ru/applications/environments/nodejs-server.html
+#
+# Важно: на Amvera часто ставят только production-зависимости (без devDependencies).
+# Tailwind, PostCSS, TypeScript и @types* должны быть в package.json → dependencies,
+# иначе сборка падает с: Cannot find module 'tailwindcss'.
 
 meta:
   environment: node

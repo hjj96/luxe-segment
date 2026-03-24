@@ -129,4 +129,10 @@ dig www.luxesegment.ru A +short
 
 ---
 
+## 7. Ошибка сборки: `Cannot find module 'tailwindcss'`
+
+На окружении ставятся только **production**-зависимости. **Tailwind, PostCSS, TypeScript** должны быть в `dependencies` в `package.json` (не только в `devDependencies`), иначе `npm run build` падает. В репозитории это уже учтено; после обновления сделайте redeploy.
+
+---
+
 *Файл для себя: можно править IP и код TXT под то, что показывает Amvera в момент подключения домена.*
