@@ -11,8 +11,9 @@ meta:
     name: npm
     version: 20
 
+# Сначала генерируем lib/products.generated.ts из data/products.xlsx (или .csv), иначе на сайте старый каталог
 build:
-  additionalCommands: npm run build
+  additionalCommands: npm run products && npm run build
 
 # containerPort должен совпадать с портом процесса (см. PORT в package.json → start)
 run:
