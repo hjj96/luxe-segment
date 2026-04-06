@@ -15,7 +15,8 @@ meta:
 build:
   additionalCommands: npm run products && npm run build
 
-# containerPort должен совпадать с портом процесса (см. PORT в package.json → start)
+# Запуск без npm run — иначе лишний sh -c и чаще SIGTERM при остановке/healthcheck.
+# PORT на Amvera должен совпадать с containerPort (часто 3000).
 run:
-  command: npm run start
+  command: node scripts/start-production.cjs
   containerPort: 3000
